@@ -39,7 +39,7 @@ public class LoggingTests
     }
 
     [Fact]
-    public async Task HomeController_IndexPost_LogWarningMessage_WhenModelStateIsInvalid()
+    public async Task HomeController_IndexPost_LogErrorMessage_WhenModelStateIsInvalid()
     {
         // Arrange
         Mock<IBrainstormSessionRepository> mockRepo = new();

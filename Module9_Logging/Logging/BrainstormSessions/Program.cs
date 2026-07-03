@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using BrainstormSessions.Core.Interfaces;
 using BrainstormSessions.Core.Model;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using BrainstormSessions.Logging;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -24,15 +26,18 @@ builder.Host.UseSerilog((context, services, loggerConfiguration) =>
     var emailSection = context.Configuration.GetSection("Serilog:Email");
     if (bool.TryParse(emailSection["Enabled"], out bool enabled) && enabled)
     {
-        int port = int.TryParse(emailSection["Port"], out int parsedPort) ? parsedPort : 25;
+        string pickupDirectorySetting = emailSection["PickupDirectory"] ?? "logs/email-pickup";
+        string pickupDirectory = Path.IsPathRooted(pickupDirectorySetting)
+            ? pickupDirectorySetting
+            : Path.GetFullPath(Path.Combine(context.HostingEnvironment.ContentRootPath, pickupDirectorySetting));
 
-        loggerConfiguration.WriteTo.Email(
-            from: emailSection["From"]!,
-            to: emailSection["To"]!,
-            host: emailSection["Host"]!,
-            port: port,
-            subject: emailSection["Subject"] ?? "BrainstormSessions error log",
-            body: emailSection["Body"] ?? "{Timestamp} [{Level}] {Message}{NewLine}{Exception}",
+        loggerConfiguration.WriteTo.Sink(
+            new PickupDirectoryEmailSink(
+                from: emailSection["From"]!,
+                to: emailSection["To"]!,
+                pickupDirectory: pickupDirectory,
+                subject: emailSection["Subject"] ?? "BrainstormSessions error log",
+                bodyTemplate: emailSection["Body"] ?? "{Timestamp} [{Level}] {Message}{NewLine}{Exception}"),
             restrictedToMinimumLevel: LogEventLevel.Error);
     }
 });
