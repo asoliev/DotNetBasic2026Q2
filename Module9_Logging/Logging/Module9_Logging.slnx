@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BrainstormSessions/BrainstormSessions.csproj" />
+  <Project Path="BrainstormSessions.Test/BrainstormSessions.Test.csproj" />
+</Solution>
