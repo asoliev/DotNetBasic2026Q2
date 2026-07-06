@@ -52,6 +52,7 @@ public static class DepartmentXmlSerializer
     public static void Serialize(Department department, string filePath)
     {
         ArgumentNullException.ThrowIfNull(department);
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
 
         XmlSerializer serializer = new(typeof(Department));
         using FileStream stream = File.Create(filePath);
@@ -60,8 +61,14 @@ public static class DepartmentXmlSerializer
 
     public static Department Deserialize(string filePath)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
         XmlSerializer serializer = new(typeof(Department));
         using FileStream stream = File.OpenRead(filePath);
-        return (Department)serializer.Deserialize(stream)!;
+        Department? department = (Department?)serializer.Deserialize(stream);
+
+        return department
+            ?? throw new InvalidOperationException(
+                $"Failed to deserialize Department from file: '{filePath}'.");
     }
 }

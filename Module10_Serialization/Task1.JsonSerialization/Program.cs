@@ -61,6 +61,7 @@ public static class DepartmentJsonSerializer
     public static void Serialize(Department department, string filePath)
     {
         ArgumentNullException.ThrowIfNull(department);
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
 
         string json = JsonSerializer.Serialize(department, Options);
         File.WriteAllText(filePath, json);
@@ -68,7 +69,13 @@ public static class DepartmentJsonSerializer
 
     public static Department Deserialize(string filePath)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
         string json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<Department>(json, Options)!;
+        Department? department = JsonSerializer.Deserialize<Department>(json, Options);
+
+        return department
+            ?? throw new InvalidOperationException(
+                $"Failed to deserialize Department from file: '{filePath}'.");
     }
 }

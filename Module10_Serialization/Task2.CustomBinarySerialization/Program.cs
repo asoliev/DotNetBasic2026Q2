@@ -52,6 +52,7 @@ public static class CustomBinarySerializer
     public static void Serialize<T>(T value, string filePath) where T : ISerializable
     {
         ArgumentNullException.ThrowIfNull(value);
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
 
         SerializationInfo info = new(typeof(T), new FormatterConverter());
         value.GetObjectData(info, new(StreamingContextStates.File));
@@ -71,6 +72,8 @@ public static class CustomBinarySerializer
 
     public static T Deserialize<T>(string filePath) where T : class, ISerializable
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
         using FileStream stream = File.OpenRead(filePath);
         using BinaryReader reader = new(stream, Encoding.UTF8, leaveOpen: false);
 
