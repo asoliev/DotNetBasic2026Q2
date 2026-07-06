@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Task1.BinarySerialization/Task1.BinarySerialization.csproj" />
+  <Project Path="Task1.XmlSerialization/Task1.XmlSerialization.csproj" />
+  <Project Path="Task1.JsonSerialization/Task1.JsonSerialization.csproj" />
+  <Project Path="Task2.CustomBinarySerialization/Task2.CustomBinarySerialization.csproj" />
+  <Project Path="Task3.DeepCloning/Task3.DeepCloning.csproj" />
+</Solution>
