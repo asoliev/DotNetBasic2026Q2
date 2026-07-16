@@ -1,11 +1,10 @@
-﻿namespace Task1.DoNotChange
+﻿namespace Task1.DoNotChange;
+
+public class Product
 {
-    public class Product
-    {
-        public int ProductID { get; set; }
-        public string ProductName { get; set; }
-        public string Category { get; set; }
-        public decimal UnitPrice { get; set; }
-        public int UnitsInStock { get; set; }
-    }
+    public int ProductID { get; set; }
+    public string ProductName { get; set; }
+    public string Category { get; set; }
+    public decimal UnitPrice { get; set; }
+    public int UnitsInStock { get; set; }
 }
