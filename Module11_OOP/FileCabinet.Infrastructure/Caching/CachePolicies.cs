@@ -1,0 +1,25 @@
+namespace FileCabinet.Infrastructure.Caching;
+
+using FileCabinet.Domain.Interfaces;
+
+public sealed class NoCachePolicy : ICachePolicy
+{
+    public bool ShouldCache => false;
+    public bool IsExpired(DateTime cachedAt) => true;
+}
+
+public sealed class NeverExpirePolicy : ICachePolicy
+{
+    public bool ShouldCache => true;
+    public bool IsExpired(DateTime cachedAt) => false;
+}
+
+public sealed class TimedExpiryPolicy : ICachePolicy
+{
+    private readonly TimeSpan _ttl;
+
+    public TimedExpiryPolicy(TimeSpan ttl) => _ttl = ttl;
+
+    public bool ShouldCache => true;
+    public bool IsExpired(DateTime cachedAt) => DateTime.UtcNow - cachedAt > _ttl;
+}
