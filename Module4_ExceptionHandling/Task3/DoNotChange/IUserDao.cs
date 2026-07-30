@@ -1,7 +1,6 @@
-﻿namespace Task3.DoNotChange
+﻿namespace Task3.DoNotChange;
+
+public interface IUserDao
 {
-    public interface IUserDao
-    {
-        IUser GetUser(int id);
-    }
+    IUser GetUser(int id);
 }

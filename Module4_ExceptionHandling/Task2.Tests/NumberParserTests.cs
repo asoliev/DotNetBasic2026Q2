@@ -23,10 +23,7 @@ public class NumberParserTests
     [TestCase("   -12034", ExpectedResult = -12034)]
     [TestCase("-12034    ", ExpectedResult = -12034)]
     [TestCase("   +007   ", ExpectedResult = 7)]
-    public int Parse_ValidNumberString_ReturnsInt32Value(string stringValue)
-    {
-        return _parser.Parse(stringValue);
-    }
+    public int Parse_ValidNumberString_ReturnsInt32Value(string stringValue) => _parser.Parse(stringValue);
 
     [Test]
     public void Parse_Null_ThrowArgumentNullException()
@@ -47,17 +44,11 @@ public class NumberParserTests
     [TestCase("-+12034")]
     [TestCase("+-12034")]
     [TestCase("0-12034")]
-    public void Parse_InvalidNumberFormat_ThrowFormatException(string stringValue)
-    {
-        Assert.That(() => _parser.Parse(stringValue), Throws.InstanceOf<FormatException>());
-    }
+    public void Parse_InvalidNumberFormat_ThrowFormatException(string stringValue) => Assert.That(() => _parser.Parse(stringValue), Throws.InstanceOf<FormatException>());
 
     [TestCase("2147483648")]
     [TestCase("-2147483649")]
     [TestCase("9999999999999999")]
     [TestCase("-9999999999999999")]
-    public void Parse_NumberOutOfInt32Range_ThrowFormatException(string stringValue)
-    {
-        Assert.That(() => _parser.Parse(stringValue), Throws.InstanceOf<OverflowException>());
-    }
+    public void Parse_NumberOutOfInt32Range_ThrowFormatException(string stringValue) => Assert.That(() => _parser.Parse(stringValue), Throws.InstanceOf<OverflowException>());
 }

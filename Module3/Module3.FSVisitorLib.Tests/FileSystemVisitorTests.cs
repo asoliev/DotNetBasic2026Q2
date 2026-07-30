@@ -31,7 +31,7 @@ public class FileSystemVisitorTests
         visitor.FileFound += (_, args) => foundFiles.Add(args.Path);
         visitor.SearchFinished += (_, _) => lifecycleEvents.Add("SearchFinished");
 
-        List<string> results = visitor.ToList();
+        List<string> results = [.. visitor];
 
         Assert.Equal("SearchStarted", lifecycleEvents.First());
         Assert.Equal("SearchFinished", lifecycleEvents.Last());
@@ -70,7 +70,7 @@ public class FileSystemVisitorTests
         visitor.FilteredDirectoryFound += (_, args) => filteredDirectories.Add(args.Path);
         visitor.FilteredFileFound += (_, args) => filteredFiles.Add(args.Path);
 
-        List<string> results = visitor.ToList();
+        List<string> results = [.. visitor];
 
         AssertPathsEqual([keepDirectory, keepFile, nestedKeepFile], results);
         AssertPathsEqual([keepDirectory], filteredDirectories);
@@ -122,7 +122,7 @@ public class FileSystemVisitorTests
                 args.Exclude = true;
         };
 
-        List<string> results = visitor.ToList();
+        List<string> results = [.. visitor];
 
         AssertPathsEqual(
             [keptDirectory, childFromExcludedDirectory, childFromFilteredExcludedDirectory, keptNestedFile, keptRootFile
@@ -153,7 +153,7 @@ public class FileSystemVisitorTests
         };
         visitor.SearchFinished += (_, _) => lifecycleEvents.Add("SearchFinished");
 
-        List<string> results = visitor.ToList();
+        List<string> results = [.. visitor];
 
         Assert.True(abortTriggered);
         AssertPathsEqual([fileSystem.RootPath], results);
@@ -194,14 +194,12 @@ public class FileSystemVisitorTests
 
     private static void AssertPathsEqual(IEnumerable<string> expected, IEnumerable<string> actual)
     {
-        string[] normalizedExpected = expected
+        string[] normalizedExpected = [.. expected
             .Select(Path.GetFullPath)
-            .OrderBy(path => path, StringComparer.Ordinal)
-            .ToArray();
-        string[] normalizedActual = actual
+            .OrderBy(path => path, StringComparer.Ordinal)];
+        string[] normalizedActual = [.. actual
             .Select(Path.GetFullPath)
-            .OrderBy(path => path, StringComparer.Ordinal)
-            .ToArray();
+            .OrderBy(path => path, StringComparer.Ordinal)];
 
         Assert.Equal(normalizedExpected, normalizedActual);
     }

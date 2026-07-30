@@ -49,7 +49,7 @@ internal static class ProviderRegistry
             }
             catch (ReflectionTypeLoadException ex)
             {
-                types = ex.Types.Where(type => type is not null).Cast<Type>().ToArray();
+                types = [.. ex.Types.Where(type => type is not null).Cast<Type>()];
             }
 
             foreach (Type type in types)

@@ -1,12 +1,6 @@
-﻿namespace Task3.DoNotChange
-{
-    public class UserTask
-    {
-        public UserTask(string description)
-        {
-            Description = description;
-        }
+﻿namespace Task3.DoNotChange;
 
-        public string Description { get; }
-    }
+public class UserTask(string description)
+{
+    public string Description { get; } = description;
 }

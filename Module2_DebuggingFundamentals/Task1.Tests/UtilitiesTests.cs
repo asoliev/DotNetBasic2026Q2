@@ -17,10 +17,7 @@ public class Tests
     }
 
     [Test]
-    public void Sort_Null_ThrowsArgumentNullException()
-    {
-        Assert.That(() => Utilities.Sort(null), Throws.InstanceOf<ArgumentNullException>());
-    }
+    public void Sort_Null_ThrowsArgumentNullException() => Assert.That(() => Utilities.Sort(null), Throws.InstanceOf<ArgumentNullException>());
 
     [Test]
     public void Sort_EmptyArray_ReturnsEmptyArray()

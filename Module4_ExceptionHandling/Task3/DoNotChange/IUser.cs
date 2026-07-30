@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Task3.DoNotChange
+namespace Task3.DoNotChange;
+
+public interface IUser
 {
-    public interface IUser
-    {
-        IList<UserTask> Tasks { get; }
-    }
+    IList<UserTask> Tasks { get; }
 }
