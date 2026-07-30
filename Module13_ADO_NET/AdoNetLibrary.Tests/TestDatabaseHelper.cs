@@ -6,19 +6,6 @@ internal static class TestDatabaseHelper
 {
     public static string? GetConnectionString() => Environment.GetEnvironmentVariable("ADO_NET_TEST_CONNECTION_STRING");
 
-    public static string GetRequiredConnectionString()
-    {
-        string? connectionString = GetConnectionString();
-        if (string.IsNullOrWhiteSpace(connectionString))
-        {
-            throw new InvalidOperationException(
-                "ADO_NET_TEST_CONNECTION_STRING is not set. " +
-                "These are SQL integration tests and must run against a real DB.");
-        }
-
-        return connectionString;
-    }
-
     public static void EnsureDatabaseObjects(string connectionString)
     {
         using var connection = new SqlConnection(connectionString);

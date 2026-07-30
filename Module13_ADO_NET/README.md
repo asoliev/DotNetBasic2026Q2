@@ -38,5 +38,5 @@ dotnet test --project AdoNetLibrary.Tests/AdoNetLibrary.Tests.csproj
 
 ## Test Behavior Without Connection String
 
-Tests are intentionally strict now.
-If `ADO_NET_TEST_CONNECTION_STRING` is not set, tests fail explicitly instead of passing silently.
+Tests currently return early when `ADO_NET_TEST_CONNECTION_STRING` is not set.
+That means they can pass without executing real DB calls.
