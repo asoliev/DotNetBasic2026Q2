@@ -36,8 +36,6 @@ EXEC('CREATE PROCEDURE dbo.usp_DeleteOrders
     @productId INT = NULL
 AS
 BEGIN
-    SET NOCOUNT ON;
-
     DELETE FROM dbo.Orders
     WHERE (@month IS NULL OR MONTH(OrderDate) = @month)
       AND (@year IS NULL OR YEAR(OrderDate) = @year)
