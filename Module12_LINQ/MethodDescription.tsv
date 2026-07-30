@@ -1,0 +1,12 @@
+Method	Description
+Linq1	Customers where total order sum > limit
+Linq2	Per customer, suppliers in the same city & country (using Select + Where)
+Linq2UsingGroup	Same as Linq2 but via GroupJoin
+Linq3	Customers with any single order > limit
+Linq4	Customers with orders, paired with their earliest order date
+Linq5	Linq4 ordered by year → month → total turnover (desc) → company name
+Linq6	Customers with non-digit postal code, null/empty region, or no ( in phone
+Linq7	Products grouped by category → units in stock (desc) → prices (asc)
+Linq8	Products bucketed into cheap/average/expensive price bands
+Linq9	Per city: average income (rounded) and average order count (rounded)
+Linq10	Unique supplier countries sorted by length then alphabetically, concatenated

@@ -108,17 +108,11 @@ public class UserTaskControllerTests
 
     private sealed class ThrowingUserDao(string message) : IUserDao
     {
-        public IUser GetUser(int id)
-        {
-            throw new FutureUserTaskException(message);
-        }
+        public IUser GetUser(int id) => throw new FutureUserTaskException(message);
     }
 
     private sealed class ThrowingUserDaoUnexpected(string message) : IUserDao
     {
-        public IUser GetUser(int id)
-        {
-            throw new InvalidOperationException(message);
-        }
+        public IUser GetUser(int id) => throw new InvalidOperationException(message);
     }
 }

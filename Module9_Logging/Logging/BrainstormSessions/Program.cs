@@ -23,7 +23,7 @@ builder.Host.UseSerilog((context, services, loggerConfiguration) =>
         .Enrich.FromLogContext()
         .WriteTo.Console();
 
-    var emailSection = context.Configuration.GetSection("Serilog:Email");
+    IConfigurationSection emailSection = context.Configuration.GetSection("Serilog:Email");
     if (bool.TryParse(emailSection["Enabled"], out bool enabled) && enabled)
     {
         string pickupDirectorySetting = emailSection["PickupDirectory"] ?? "logs/email-pickup";
