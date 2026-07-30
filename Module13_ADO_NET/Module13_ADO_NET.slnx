@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AdoNetLibrary.Tests/AdoNetLibrary.Tests.csproj" />
+  <Project Path="AdoNetLibrary/AdoNetLibrary.csproj" />
+</Solution>
