@@ -12,4 +12,4 @@ SA_PASSWORD="${MSSQL_SA_PASSWORD:-Your_password123}"
 export ADO_NET_TEST_CONNECTION_STRING="Server=localhost,1433;Database=$DB_NAME;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=True;"
 
 echo "Running integration tests against: $DB_NAME"
-dotnet test --project AdoNetLibrary.Tests/AdoNetLibrary.Tests.csproj
+dotnet test AdoNetLibrary.Tests/AdoNetLibrary.Tests.csproj

@@ -89,7 +89,7 @@ Example:
 
 ```bash
 export ADO_NET_TEST_CONNECTION_STRING="Server=localhost,1433;Database=AdoNetModule13;User Id=sa;Password=Your_password123;TrustServerCertificate=True;"
-dotnet test --project AdoNetLibrary.Tests/AdoNetLibrary.Tests.csproj
+dotnet test AdoNetLibrary.Tests/AdoNetLibrary.Tests.csproj
 ```
 
 To stop DB:
