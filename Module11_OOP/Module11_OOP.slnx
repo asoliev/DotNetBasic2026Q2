@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="FileCabinet.Domain/FileCabinet.Domain.csproj" />
+  <Project Path="FileCabinet.Infrastructure/FileCabinet.Infrastructure.csproj" />
+  <Project Path="FileCabinet.ConsoleApp/FileCabinet.ConsoleApp.csproj" />
+</Solution>
