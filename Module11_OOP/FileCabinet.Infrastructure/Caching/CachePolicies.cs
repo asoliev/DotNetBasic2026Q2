@@ -14,11 +14,9 @@ public sealed class NeverExpirePolicy : ICachePolicy
     public bool IsExpired(DateTime cachedAt) => false;
 }
 
-public sealed class TimedExpiryPolicy : ICachePolicy
+public sealed class TimedExpiryPolicy(TimeSpan ttl) : ICachePolicy
 {
-    private readonly TimeSpan _ttl;
-
-    public TimedExpiryPolicy(TimeSpan ttl) => _ttl = ttl;
+    private readonly TimeSpan _ttl = ttl;
 
     public bool ShouldCache => true;
     public bool IsExpired(DateTime cachedAt) => DateTime.UtcNow - cachedAt > _ttl;
