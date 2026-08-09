@@ -37,7 +37,7 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
         using SqlCommand command = new
         (
             """
-            SELECT Id, ProductId, Quantity, OrderDate, Status
+            SELECT Id, ProductId, Quantity, OrderDate, Status, CreatedDate, UpdatedDate
             FROM dbo.Orders
             WHERE Id = @id;
             """,
@@ -63,7 +63,8 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
             SET ProductId = @productId,
                 Quantity = @quantity,
                 OrderDate = @orderDate,
-                Status = @status
+                Status = @status,
+                UpdatedDate = SYSUTCDATETIME()
             WHERE Id = @id;
             """,
             connection
@@ -167,6 +168,8 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
             Quantity = reader.GetInt32(2),
             OrderDate = reader.GetDateTime(3),
             Status = status,
+            CreatedDate = reader.GetDateTime(5),
+            UpdatedDate = reader.GetDateTime(6),
         };
     }
 }

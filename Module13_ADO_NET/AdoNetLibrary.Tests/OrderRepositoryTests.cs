@@ -31,6 +31,9 @@ public sealed class OrderRepositoryTests
         Assert.Equal(productId, loaded!.ProductId);
         Assert.Equal(3, loaded.Quantity);
         Assert.Equal(OrderStatus.InProgress, loaded.Status);
+        Assert.NotEqual(default, loaded.CreatedDate);
+        Assert.NotEqual(default, loaded.UpdatedDate);
+        Assert.Equal(loaded.CreatedDate, loaded.UpdatedDate);
     }
 
     [Fact]
@@ -69,6 +72,9 @@ public sealed class OrderRepositoryTests
         Assert.NotNull(loadedAfterUpdate);
         Assert.Equal(2, loadedAfterUpdate!.Quantity);
         Assert.Equal(OrderStatus.Loading, loadedAfterUpdate.Status);
+        Assert.NotEqual(default, loadedAfterUpdate.CreatedDate);
+        Assert.NotEqual(default, loadedAfterUpdate.UpdatedDate);
+        Assert.True(loadedAfterUpdate.UpdatedDate >= loadedAfterUpdate.CreatedDate);
         Assert.True(deleted);
         Assert.Null(loadedAfterDelete);
     }
@@ -121,6 +127,8 @@ public sealed class OrderRepositoryTests
         Assert.Equal(OrderStatus.Arrived, order.Status);
         Assert.Equal(2026, order.OrderDate.Year);
         Assert.Equal(4, order.OrderDate.Month);
+        Assert.NotEqual(default, order.CreatedDate);
+        Assert.NotEqual(default, order.UpdatedDate);
     }
 
     [Fact]

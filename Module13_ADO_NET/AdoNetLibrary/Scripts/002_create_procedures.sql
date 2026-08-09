@@ -12,7 +12,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT Id, ProductId, Quantity, OrderDate, Status
+    SELECT Id, ProductId, Quantity, OrderDate, Status, CreatedDate, UpdatedDate
     FROM dbo.Orders
     WHERE (@month IS NULL OR MONTH(OrderDate) = @month)
       AND (@year IS NULL OR YEAR(OrderDate) = @year)
