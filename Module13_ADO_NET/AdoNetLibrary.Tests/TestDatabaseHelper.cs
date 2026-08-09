@@ -27,8 +27,6 @@ internal static class TestDatabaseHelper
             (
                 Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
                 ProductId INT NOT NULL,
-                Quantity INT NOT NULL CHECK (Quantity > 0),
-                OrderDate DATETIME2 NOT NULL,
                 Status NVARCHAR(20) NOT NULL,
                 CreatedDate DATETIME2 NOT NULL CONSTRAINT DF_Orders_CreatedDate DEFAULT SYSUTCDATETIME(),
                 UpdatedDate DATETIME2 NOT NULL CONSTRAINT DF_Orders_UpdatedDate DEFAULT SYSUTCDATETIME(),
@@ -45,10 +43,10 @@ internal static class TestDatabaseHelper
             AS
             BEGIN
                 SET NOCOUNT ON;
-                                SELECT Id, ProductId, Quantity, OrderDate, Status, CreatedDate, UpdatedDate
+                                SELECT Id, ProductId, Status, CreatedDate, UpdatedDate
                 FROM dbo.Orders
-                WHERE (@month IS NULL OR MONTH(OrderDate) = @month)
-                  AND (@year IS NULL OR YEAR(OrderDate) = @year)
+                                WHERE (@month IS NULL OR MONTH(CreatedDate) = @month)
+                                    AND (@year IS NULL OR YEAR(CreatedDate) = @year)
                   AND (@status IS NULL OR Status = @status)
                   AND (@productId IS NULL OR ProductId = @productId)
                 ORDER BY Id;
@@ -63,8 +61,8 @@ internal static class TestDatabaseHelper
             AS
             BEGIN
                 DELETE FROM dbo.Orders
-                WHERE (@month IS NULL OR MONTH(OrderDate) = @month)
-                  AND (@year IS NULL OR YEAR(OrderDate) = @year)
+                                WHERE (@month IS NULL OR MONTH(CreatedDate) = @month)
+                                    AND (@year IS NULL OR YEAR(CreatedDate) = @year)
                   AND (@status IS NULL OR Status = @status)
                   AND (@productId IS NULL OR ProductId = @productId);
             END;');",

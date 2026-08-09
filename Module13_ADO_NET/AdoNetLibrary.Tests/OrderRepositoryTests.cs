@@ -20,20 +20,18 @@ public sealed class OrderRepositoryTests
         int orderId = orderRepository.Create(new()
         {
             ProductId = productId,
-            Quantity = 3,
-            OrderDate = new(2026, 06, 12),
             Status = OrderStatus.InProgress,
+            CreatedDate = new(2026, 06, 12, 10, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 06, 12, 10, 0, 0, DateTimeKind.Utc),
         });
 
         Order? loaded = orderRepository.GetById(orderId);
 
         Assert.NotNull(loaded);
         Assert.Equal(productId, loaded!.ProductId);
-        Assert.Equal(3, loaded.Quantity);
         Assert.Equal(OrderStatus.InProgress, loaded.Status);
-        Assert.NotEqual(default, loaded.CreatedDate);
-        Assert.NotEqual(default, loaded.UpdatedDate);
         Assert.Equal(loaded.CreatedDate, loaded.UpdatedDate);
+        Assert.Equal(new DateTime(2026, 06, 12, 10, 0, 0, DateTimeKind.Utc), loaded.CreatedDate);
     }
 
     [Fact]
@@ -50,18 +48,18 @@ public sealed class OrderRepositoryTests
         int orderId = orderRepository.Create(new()
         {
             ProductId = productId,
-            Quantity = 1,
-            OrderDate = new(2026, 05, 01),
             Status = OrderStatus.NotStarted,
+            CreatedDate = new(2026, 05, 01, 8, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 05, 01, 8, 0, 0, DateTimeKind.Utc),
         });
 
         bool updated = orderRepository.Update(new()
         {
             Id = orderId,
             ProductId = productId,
-            Quantity = 2,
-            OrderDate = new(2026, 05, 02),
             Status = OrderStatus.Loading,
+            CreatedDate = new(2026, 05, 01, 8, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 05, 02, 9, 0, 0, DateTimeKind.Utc),
         });
 
         Order? loadedAfterUpdate = orderRepository.GetById(orderId);
@@ -70,10 +68,9 @@ public sealed class OrderRepositoryTests
 
         Assert.True(updated);
         Assert.NotNull(loadedAfterUpdate);
-        Assert.Equal(2, loadedAfterUpdate!.Quantity);
         Assert.Equal(OrderStatus.Loading, loadedAfterUpdate.Status);
-        Assert.NotEqual(default, loadedAfterUpdate.CreatedDate);
-        Assert.NotEqual(default, loadedAfterUpdate.UpdatedDate);
+        Assert.Equal(new DateTime(2026, 05, 01, 8, 0, 0, DateTimeKind.Utc), loadedAfterUpdate.CreatedDate);
+        Assert.Equal(new DateTime(2026, 05, 02, 9, 0, 0, DateTimeKind.Utc), loadedAfterUpdate.UpdatedDate);
         Assert.True(loadedAfterUpdate.UpdatedDate >= loadedAfterUpdate.CreatedDate);
         Assert.True(deleted);
         Assert.Null(loadedAfterDelete);
@@ -95,23 +92,23 @@ public sealed class OrderRepositoryTests
         orderRepository.Create(new()
         {
             ProductId = product1,
-            Quantity = 2,
-            OrderDate = new(2026, 04, 10),
             Status = OrderStatus.Arrived,
+            CreatedDate = new(2026, 04, 10, 6, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 04, 10, 6, 0, 0, DateTimeKind.Utc),
         });
         orderRepository.Create(new()
         {
             ProductId = product1,
-            Quantity = 4,
-            OrderDate = new(2026, 04, 20),
             Status = OrderStatus.Done,
+            CreatedDate = new(2026, 04, 20, 6, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 04, 20, 6, 0, 0, DateTimeKind.Utc),
         });
         orderRepository.Create(new()
         {
             ProductId = product2,
-            Quantity = 5,
-            OrderDate = new(2025, 04, 10),
             Status = OrderStatus.Arrived,
+            CreatedDate = new(2025, 04, 10, 6, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2025, 04, 10, 6, 0, 0, DateTimeKind.Utc),
         });
 
         IReadOnlyCollection<Order> filtered = orderRepository.GetOrders(new()
@@ -125,10 +122,9 @@ public sealed class OrderRepositoryTests
         Order order = Assert.Single(filtered);
         Assert.Equal(product1, order.ProductId);
         Assert.Equal(OrderStatus.Arrived, order.Status);
-        Assert.Equal(2026, order.OrderDate.Year);
-        Assert.Equal(4, order.OrderDate.Month);
-        Assert.NotEqual(default, order.CreatedDate);
-        Assert.NotEqual(default, order.UpdatedDate);
+        Assert.Equal(2026, order.CreatedDate.Year);
+        Assert.Equal(4, order.CreatedDate.Month);
+        Assert.Equal(order.CreatedDate, order.UpdatedDate);
     }
 
     [Fact]
@@ -147,23 +143,23 @@ public sealed class OrderRepositoryTests
         orderRepository.Create(new()
         {
             ProductId = product1,
-            Quantity = 2,
-            OrderDate = new(2026, 02, 01),
             Status = OrderStatus.Cancelled,
+            CreatedDate = new(2026, 02, 01, 7, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 02, 01, 7, 0, 0, DateTimeKind.Utc),
         });
         orderRepository.Create(new()
         {
             ProductId = product1,
-            Quantity = 4,
-            OrderDate = new(2026, 02, 15),
             Status = OrderStatus.Cancelled,
+            CreatedDate = new(2026, 02, 15, 7, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 02, 15, 7, 0, 0, DateTimeKind.Utc),
         });
         orderRepository.Create(new()
         {
             ProductId = product2,
-            Quantity = 3,
-            OrderDate = new(2026, 02, 20),
             Status = OrderStatus.Cancelled,
+            CreatedDate = new(2026, 02, 20, 7, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 02, 20, 7, 0, 0, DateTimeKind.Utc),
         });
 
         int deleted = orderRepository.DeleteOrders(new()

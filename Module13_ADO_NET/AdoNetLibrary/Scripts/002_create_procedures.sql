@@ -12,10 +12,10 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT Id, ProductId, Quantity, OrderDate, Status, CreatedDate, UpdatedDate
+        SELECT Id, ProductId, Status, CreatedDate, UpdatedDate
     FROM dbo.Orders
-    WHERE (@month IS NULL OR MONTH(OrderDate) = @month)
-      AND (@year IS NULL OR YEAR(OrderDate) = @year)
+        WHERE (@month IS NULL OR MONTH(CreatedDate) = @month)
+            AND (@year IS NULL OR YEAR(CreatedDate) = @year)
       AND (@status IS NULL OR Status = @status)
       AND (@productId IS NULL OR ProductId = @productId)
     ORDER BY Id;
@@ -37,8 +37,8 @@ EXEC('CREATE PROCEDURE dbo.usp_DeleteOrders
 AS
 BEGIN
     DELETE FROM dbo.Orders
-    WHERE (@month IS NULL OR MONTH(OrderDate) = @month)
-      AND (@year IS NULL OR YEAR(OrderDate) = @year)
+        WHERE (@month IS NULL OR MONTH(CreatedDate) = @month)
+            AND (@year IS NULL OR YEAR(CreatedDate) = @year)
       AND (@status IS NULL OR Status = @status)
       AND (@productId IS NULL OR ProductId = @productId);
 END;');

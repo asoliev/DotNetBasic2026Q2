@@ -16,17 +16,17 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
         using SqlCommand command = new
         (
             """
-            INSERT INTO dbo.Orders (ProductId, Quantity, OrderDate, Status)
+            INSERT INTO dbo.Orders (ProductId, Status, CreatedDate, UpdatedDate)
             OUTPUT INSERTED.Id
-            VALUES (@productId, @quantity, @orderDate, @status);
+            VALUES (@productId, @status, @createdDate, @updatedDate);
             """,
             connection
         );
 
         command.Parameters.AddWithValue("@productId", order.ProductId);
-        command.Parameters.AddWithValue("@quantity", order.Quantity);
-        command.Parameters.AddWithValue("@orderDate", order.OrderDate);
         command.Parameters.AddWithValue("@status", order.Status.ToString());
+        command.Parameters.AddWithValue("@createdDate", order.CreatedDate);
+        command.Parameters.AddWithValue("@updatedDate", order.UpdatedDate);
 
         return Convert.ToInt32(command.ExecuteScalar());
     }
@@ -37,7 +37,7 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
         using SqlCommand command = new
         (
             """
-            SELECT Id, ProductId, Quantity, OrderDate, Status, CreatedDate, UpdatedDate
+            SELECT Id, ProductId, Status, CreatedDate, UpdatedDate
             FROM dbo.Orders
             WHERE Id = @id;
             """,
@@ -61,10 +61,9 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
             """
             UPDATE dbo.Orders
             SET ProductId = @productId,
-                Quantity = @quantity,
-                OrderDate = @orderDate,
                 Status = @status,
-                UpdatedDate = SYSUTCDATETIME()
+                CreatedDate = @createdDate,
+                UpdatedDate = @updatedDate
             WHERE Id = @id;
             """,
             connection
@@ -72,9 +71,9 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
 
         command.Parameters.AddWithValue("@id", order.Id);
         command.Parameters.AddWithValue("@productId", order.ProductId);
-        command.Parameters.AddWithValue("@quantity", order.Quantity);
-        command.Parameters.AddWithValue("@orderDate", order.OrderDate);
         command.Parameters.AddWithValue("@status", order.Status.ToString());
+        command.Parameters.AddWithValue("@createdDate", order.CreatedDate);
+        command.Parameters.AddWithValue("@updatedDate", order.UpdatedDate);
 
         return command.ExecuteNonQuery() > 0;
     }
@@ -154,7 +153,7 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
 
     private Order MapOrder(SqlDataReader reader)
     {
-        string statusString = reader.GetString(4);
+        string statusString = reader.GetString(2);
         bool parsed = Enum.TryParse<OrderStatus>(statusString, ignoreCase: true, out OrderStatus status);
         if (!parsed)
         {
@@ -165,11 +164,9 @@ public sealed class OrderRepository(string connectionString) : IOrderRepository
         {
             Id = reader.GetInt32(0),
             ProductId = reader.GetInt32(1),
-            Quantity = reader.GetInt32(2),
-            OrderDate = reader.GetDateTime(3),
             Status = status,
-            CreatedDate = reader.GetDateTime(5),
-            UpdatedDate = reader.GetDateTime(6),
+            CreatedDate = reader.GetDateTime(3),
+            UpdatedDate = reader.GetDateTime(4),
         };
     }
 }
