@@ -1,5 +1,6 @@
 using AdoNetLibrary.Models;
 using AdoNetLibrary.Repositories;
+using Microsoft.Data.SqlClient;
 
 namespace AdoNetLibrary.Tests;
 
@@ -228,5 +229,140 @@ public sealed class OrderRepositoryTests
         Assert.Equal(2, deleted);
         Order remainingOrder = Assert.Single(remainingOrders);
         Assert.Equal(product2, remainingOrder.ProductId);
+    }
+
+    [Fact]
+    public void GetById_WhenOrderDoesNotExist_ShouldReturnNull()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        OrderRepository orderRepository = new(connectionString);
+
+        Order? loaded = orderRepository.GetById(9999);
+
+        Assert.Null(loaded);
+    }
+
+    [Fact]
+    public void Update_WhenOrderDoesNotExist_ShouldReturnFalse()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        OrderRepository orderRepository = new(connectionString);
+
+        bool updated = orderRepository.Update(new()
+        {
+            Id = 9999,
+            ProductId = 9999,
+            Status = OrderStatus.Loading,
+            CreatedDate = new(2026, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 01, 02, 0, 0, 0, DateTimeKind.Utc),
+        });
+
+        Assert.False(updated);
+    }
+
+    [Fact]
+    public void Delete_WhenOrderDoesNotExist_ShouldReturnFalse()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        OrderRepository orderRepository = new(connectionString);
+
+        bool deleted = orderRepository.Delete(9999);
+
+        Assert.False(deleted);
+    }
+
+    [Fact]
+    public void GetOrders_WhenNoOrdersMatchFilter_ShouldReturnEmptyCollection()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        ProductRepository productRepository = new(connectionString);
+        OrderRepository orderRepository = new(connectionString);
+
+        int productId = productRepository.Create(new()
+        {
+            Name = "Product Z",
+            Description = "Empty result seed",
+            Weight = 1.00m,
+            Height = 1.00m,
+            Width = 1.00m,
+            Length = 1.00m,
+        });
+
+        orderRepository.Create(new()
+        {
+            ProductId = productId,
+            Status = OrderStatus.Done,
+            CreatedDate = new(2026, 03, 01, 0, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 03, 01, 0, 0, 0, DateTimeKind.Utc),
+        });
+
+        IReadOnlyCollection<Order> filtered = orderRepository.GetOrders(new()
+        {
+            Month = 12,
+            Year = 2024,
+            Status = OrderStatus.Cancelled,
+            ProductId = productId,
+        });
+
+        Assert.Empty(filtered);
+    }
+
+    [Fact]
+    public void Create_WhenProductDoesNotExist_ShouldThrowForeignKeyException()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        OrderRepository orderRepository = new(connectionString);
+
+        Assert.ThrowsAny<SqlException>(() => orderRepository.Create(new()
+        {
+            ProductId = 9999,
+            Status = OrderStatus.NotStarted,
+            CreatedDate = new(2026, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+        }));
+    }
+
+    [Fact]
+    public void Create_WhenStatusIsInvalid_ShouldThrowConstraintException()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        ProductRepository productRepository = new(connectionString);
+        OrderRepository orderRepository = new(connectionString);
+
+        int productId = productRepository.Create(new()
+        {
+            Name = "Status Seed",
+            Description = "Seed for invalid status",
+            Weight = 1.00m,
+            Height = 1.00m,
+            Width = 1.00m,
+            Length = 1.00m,
+        });
+
+        Assert.ThrowsAny<SqlException>(() => orderRepository.Create(new()
+        {
+            ProductId = productId,
+            Status = (OrderStatus)999,
+            CreatedDate = new(2026, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+            UpdatedDate = new(2026, 01, 01, 0, 0, 0, DateTimeKind.Utc),
+        }));
     }
 }

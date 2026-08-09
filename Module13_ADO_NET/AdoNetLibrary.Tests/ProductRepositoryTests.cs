@@ -138,4 +138,69 @@ public sealed class ProductRepositoryTests
         Assert.Equal(2, products.Count);
         Assert.Equal(["Phone", "Tablet"], products.Select(p => p.Name).OrderBy(n => n));
     }
+
+    [Fact]
+    public void GetById_WhenProductDoesNotExist_ShouldReturnNull()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        ProductRepository repository = new(connectionString);
+
+        Product? loaded = repository.GetById(9999);
+
+        Assert.Null(loaded);
+    }
+
+    [Fact]
+    public void Update_WhenProductDoesNotExist_ShouldReturnFalse()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        ProductRepository repository = new(connectionString);
+
+        bool updated = repository.Update(new()
+        {
+            Id = 9999,
+            Name = "Missing",
+            Description = "Missing product",
+            Weight = 1m,
+            Height = 1m,
+            Width = 1m,
+            Length = 1m,
+        });
+
+        Assert.False(updated);
+    }
+
+    [Fact]
+    public void Delete_WhenProductDoesNotExist_ShouldReturnFalse()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        ProductRepository repository = new(connectionString);
+
+        bool deleted = repository.Delete(9999);
+
+        Assert.False(deleted);
+    }
+
+    [Fact]
+    public void GetAll_WhenNoProductsExist_ShouldReturnEmptyCollection()
+    {
+        string? connectionString = TestDatabaseHelper.GetConnectionString();
+        if (string.IsNullOrWhiteSpace(connectionString)) return;
+
+        TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
+        ProductRepository repository = new(connectionString);
+
+        IReadOnlyCollection<Product> products = repository.GetAll();
+
+        Assert.Empty(products);
+    }
 }
