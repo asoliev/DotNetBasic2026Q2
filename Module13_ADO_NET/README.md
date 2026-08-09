@@ -14,10 +14,14 @@ This module contains:
 
 ## Database Setup
 
-Use SQL scripts in order:
+The schema is organized as a SQL project in `AdoNetDb/Module13_ADO_NET.sqlproj`.
+The bootstrap script applies the SQL project sources into SQL Server.
 
-1. `AdoNetLibrary/Scripts/001_create_schema.sql`
-2. `AdoNetLibrary/Scripts/002_create_procedures.sql`
+Build the SQL project with:
+
+```bash
+dotnet build AdoNetDb/Module13_ADO_NET.sqlproj
+```
 
 ### Quick SQL Server Setup on macOS (Docker Compose)
 
@@ -63,16 +67,26 @@ docker compose exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
 Copy and run scripts:
 
 ```bash
-docker cp AdoNetLibrary/Scripts/001_create_schema.sql module13_sqlserver:/tmp/001_create_schema.sql
-docker cp AdoNetLibrary/Scripts/002_create_procedures.sql module13_sqlserver:/tmp/002_create_procedures.sql
+docker cp AdoNetDb/Tables/Products.sql module13_sqlserver:/tmp/Products.sql
+docker cp AdoNetDb/Tables/Orders.sql module13_sqlserver:/tmp/Orders.sql
+docker cp AdoNetDb/StoredProcedures/usp_GetOrders.sql module13_sqlserver:/tmp/usp_GetOrders.sql
+docker cp AdoNetDb/StoredProcedures/usp_DeleteOrders.sql module13_sqlserver:/tmp/usp_DeleteOrders.sql
 
 docker compose exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
 	-S localhost -U sa -P "Your_password123" -C -d AdoNetModule13 \
-	-i /tmp/001_create_schema.sql
+	-i /tmp/Products.sql
 
 docker compose exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
 	-S localhost -U sa -P "Your_password123" -C -d AdoNetModule13 \
-	-i /tmp/002_create_procedures.sql
+	-i /tmp/Orders.sql
+
+docker compose exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
+	-S localhost -U sa -P "Your_password123" -C -d AdoNetModule13 \
+	-i /tmp/usp_GetOrders.sql
+
+docker compose exec sqlserver /opt/mssql-tools18/bin/sqlcmd \
+	-S localhost -U sa -P "Your_password123" -C -d AdoNetModule13 \
+	-i /tmp/usp_DeleteOrders.sql
 ```
 
 ## Running Build and Tests

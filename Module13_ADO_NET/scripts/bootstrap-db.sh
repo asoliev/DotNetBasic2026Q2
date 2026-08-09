@@ -17,18 +17,28 @@ docker compose exec -T sqlserver /opt/mssql-tools18/bin/sqlcmd \
   -Q "IF DB_ID('$DB_NAME') IS NULL CREATE DATABASE [$DB_NAME];"
 
 echo "Copying SQL scripts into container..."
-docker cp AdoNetLibrary/Scripts/001_create_schema.sql "$CONTAINER_NAME:/tmp/001_create_schema.sql"
-docker cp AdoNetLibrary/Scripts/002_create_procedures.sql "$CONTAINER_NAME:/tmp/002_create_procedures.sql"
+docker cp AdoNetDb/Tables/Products.sql "$CONTAINER_NAME:/tmp/Products.sql"
+docker cp AdoNetDb/Tables/Orders.sql "$CONTAINER_NAME:/tmp/Orders.sql"
+docker cp AdoNetDb/StoredProcedures/usp_GetOrders.sql "$CONTAINER_NAME:/tmp/usp_GetOrders.sql"
+docker cp AdoNetDb/StoredProcedures/usp_DeleteOrders.sql "$CONTAINER_NAME:/tmp/usp_DeleteOrders.sql"
 
 echo "Applying schema script..."
 docker compose exec -T sqlserver /opt/mssql-tools18/bin/sqlcmd \
   -S localhost -U sa -P "$SA_PASSWORD" -C -d "$DB_NAME" \
-  -i /tmp/001_create_schema.sql
+  -i /tmp/Products.sql
+
+docker compose exec -T sqlserver /opt/mssql-tools18/bin/sqlcmd \
+  -S localhost -U sa -P "$SA_PASSWORD" -C -d "$DB_NAME" \
+  -i /tmp/Orders.sql
 
 echo "Applying procedures script..."
 docker compose exec -T sqlserver /opt/mssql-tools18/bin/sqlcmd \
   -S localhost -U sa -P "$SA_PASSWORD" -C -d "$DB_NAME" \
-  -i /tmp/002_create_procedures.sql
+  -i /tmp/usp_GetOrders.sql
+
+docker compose exec -T sqlserver /opt/mssql-tools18/bin/sqlcmd \
+  -S localhost -U sa -P "$SA_PASSWORD" -C -d "$DB_NAME" \
+  -i /tmp/usp_DeleteOrders.sql
 
 echo
 echo "Database bootstrap completed."
