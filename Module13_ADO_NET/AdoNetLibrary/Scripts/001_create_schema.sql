@@ -12,7 +12,11 @@ CREATE TABLE dbo.Products
 (
     Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     Name NVARCHAR(100) NOT NULL,
-    Price DECIMAL(18,2) NOT NULL CHECK (Price >= 0)
+    Description NVARCHAR(500) NOT NULL,
+    Weight DECIMAL(18,2) NOT NULL CHECK (Weight >= 0),
+    Height DECIMAL(18,2) NOT NULL CHECK (Height >= 0),
+    Width DECIMAL(18,2) NOT NULL CHECK (Width >= 0),
+    Length DECIMAL(18,2) NOT NULL CHECK (Length >= 0)
 );
 
 CREATE TABLE dbo.Orders

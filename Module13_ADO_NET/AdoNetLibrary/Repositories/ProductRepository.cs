@@ -16,15 +16,19 @@ public sealed class ProductRepository(string connectionString) : IProductReposit
         using SqlCommand command = new
         (
             """
-            INSERT INTO dbo.Products (Name, Price)
+            INSERT INTO dbo.Products (Name, Description, Weight, Height, Width, Length)
             OUTPUT INSERTED.Id
-            VALUES (@name, @price);
+            VALUES (@name, @description, @weight, @height, @width, @length);
             """,
             connection
         );
 
         command.Parameters.AddWithValue("@name", product.Name);
-        command.Parameters.AddWithValue("@price", product.Price);
+        command.Parameters.AddWithValue("@description", product.Description);
+        command.Parameters.AddWithValue("@weight", product.Weight);
+        command.Parameters.AddWithValue("@height", product.Height);
+        command.Parameters.AddWithValue("@width", product.Width);
+        command.Parameters.AddWithValue("@length", product.Length);
 
         return Convert.ToInt32(command.ExecuteScalar());
     }
@@ -35,7 +39,7 @@ public sealed class ProductRepository(string connectionString) : IProductReposit
         using SqlCommand command = new
         (
             """
-            SELECT Id, Name, Price
+            SELECT Id, Name, Description, Weight, Height, Width, Length
             FROM dbo.Products
             WHERE Id = @id;
             """,
@@ -50,7 +54,11 @@ public sealed class ProductRepository(string connectionString) : IProductReposit
         {
             Id = reader.GetInt32(0),
             Name = reader.GetString(1),
-            Price = reader.GetDecimal(2),
+            Description = reader.GetString(2),
+            Weight = reader.GetDecimal(3),
+            Height = reader.GetDecimal(4),
+            Width = reader.GetDecimal(5),
+            Length = reader.GetDecimal(6),
         };
     }
 
@@ -63,7 +71,7 @@ public sealed class ProductRepository(string connectionString) : IProductReposit
         using SqlCommand command = new
         (
             """
-            SELECT Id, Name, Price
+            SELECT Id, Name, Description, Weight, Height, Width, Length
             FROM dbo.Products
             ORDER BY Id;
             """,
@@ -80,7 +88,11 @@ public sealed class ProductRepository(string connectionString) : IProductReposit
             {
                 Id = Convert.ToInt32(row["Id"]),
                 Name = Convert.ToString(row["Name"]) ?? string.Empty,
-                Price = Convert.ToDecimal(row["Price"]),
+                Description = Convert.ToString(row["Description"]) ?? string.Empty,
+                Weight = Convert.ToDecimal(row["Weight"]),
+                Height = Convert.ToDecimal(row["Height"]),
+                Width = Convert.ToDecimal(row["Width"]),
+                Length = Convert.ToDecimal(row["Length"]),
             });
         }
 
@@ -97,7 +109,11 @@ public sealed class ProductRepository(string connectionString) : IProductReposit
             """
             UPDATE dbo.Products
             SET Name = @name,
-                Price = @price
+                Description = @description,
+                Weight = @weight,
+                Height = @height,
+                Width = @width,
+                Length = @length
             WHERE Id = @id;
             """,
             connection
@@ -105,7 +121,11 @@ public sealed class ProductRepository(string connectionString) : IProductReposit
 
         command.Parameters.AddWithValue("@id", product.Id);
         command.Parameters.AddWithValue("@name", product.Name);
-        command.Parameters.AddWithValue("@price", product.Price);
+        command.Parameters.AddWithValue("@description", product.Description);
+        command.Parameters.AddWithValue("@weight", product.Weight);
+        command.Parameters.AddWithValue("@height", product.Height);
+        command.Parameters.AddWithValue("@width", product.Width);
+        command.Parameters.AddWithValue("@length", product.Length);
 
         return command.ExecuteNonQuery() > 0;
     }

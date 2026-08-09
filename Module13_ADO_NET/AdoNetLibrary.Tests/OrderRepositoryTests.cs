@@ -15,7 +15,15 @@ public sealed class OrderRepositoryTests
         ProductRepository productRepository = new(connectionString);
         OrderRepository orderRepository = new(connectionString);
 
-        int productId = productRepository.Create(new() { Name = "Monitor", Price = 280m });
+        int productId = productRepository.Create(new()
+        {
+            Name = "Monitor",
+            Description = "24-inch monitor",
+            Weight = 3.40m,
+            Height = 45.00m,
+            Width = 54.00m,
+            Length = 18.00m,
+        });
 
         int orderId = orderRepository.Create(new()
         {
@@ -44,7 +52,15 @@ public sealed class OrderRepositoryTests
         ProductRepository productRepository = new(connectionString);
         OrderRepository orderRepository = new(connectionString);
 
-        int productId = productRepository.Create(new() { Name = "SSD", Price = 180m });
+        int productId = productRepository.Create(new()
+        {
+            Name = "SSD",
+            Description = "1TB NVMe SSD",
+            Weight = 0.05m,
+            Height = 0.70m,
+            Width = 2.20m,
+            Length = 8.00m,
+        });
         int orderId = orderRepository.Create(new()
         {
             ProductId = productId,
@@ -86,8 +102,24 @@ public sealed class OrderRepositoryTests
         ProductRepository productRepository = new(connectionString);
         OrderRepository orderRepository = new(connectionString);
 
-        int product1 = productRepository.Create(new() { Name = "Product A", Price = 12m });
-        int product2 = productRepository.Create(new() { Name = "Product B", Price = 20m });
+        int product1 = productRepository.Create(new()
+        {
+            Name = "Product A",
+            Description = "First test product",
+            Weight = 1.00m,
+            Height = 10.00m,
+            Width = 10.00m,
+            Length = 10.00m,
+        });
+        int product2 = productRepository.Create(new()
+        {
+            Name = "Product B",
+            Description = "Second test product",
+            Weight = 2.00m,
+            Height = 12.00m,
+            Width = 12.00m,
+            Length = 12.00m,
+        });
 
         orderRepository.Create(new()
         {
@@ -137,8 +169,24 @@ public sealed class OrderRepositoryTests
         ProductRepository productRepository = new(connectionString);
         OrderRepository orderRepository = new(connectionString);
 
-        int product1 = productRepository.Create(new() { Name = "Product X", Price = 12m });
-        int product2 = productRepository.Create(new() { Name = "Product Y", Price = 20m });
+        int product1 = productRepository.Create(new()
+        {
+            Name = "Product X",
+            Description = "Cleanup product X",
+            Weight = 1.50m,
+            Height = 11.00m,
+            Width = 11.00m,
+            Length = 11.00m,
+        });
+        int product2 = productRepository.Create(new()
+        {
+            Name = "Product Y",
+            Description = "Cleanup product Y",
+            Weight = 2.50m,
+            Height = 13.00m,
+            Width = 13.00m,
+            Length = 13.00m,
+        });
 
         orderRepository.Create(new()
         {

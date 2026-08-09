@@ -17,7 +17,11 @@ public sealed class ProductRepositoryTests
         Product product = new()
         {
             Name = "Laptop",
-            Price = 1500.55m,
+            Description = "Portable workstation",
+            Weight = 1.75m,
+            Height = 2.00m,
+            Width = 32.00m,
+            Length = 23.00m,
         };
 
         int productId = repository.Create(product);
@@ -26,7 +30,11 @@ public sealed class ProductRepositoryTests
 
         Assert.NotNull(loaded);
         Assert.Equal("Laptop", loaded!.Name);
-        Assert.Equal(1500.55m, loaded.Price);
+        Assert.Equal("Portable workstation", loaded.Description);
+        Assert.Equal(1.75m, loaded.Weight);
+        Assert.Equal(2.00m, loaded.Height);
+        Assert.Equal(32.00m, loaded.Width);
+        Assert.Equal(23.00m, loaded.Length);
     }
 
     [Fact]
@@ -38,13 +46,25 @@ public sealed class ProductRepositoryTests
         TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
         ProductRepository repository = new(connectionString);
 
-        int productId = repository.Create(new() { Name = "Mouse", Price = 10m });
+        int productId = repository.Create(new()
+        {
+            Name = "Mouse",
+            Description = "Wireless mouse",
+            Weight = 0.10m,
+            Height = 3.00m,
+            Width = 6.00m,
+            Length = 11.00m,
+        });
 
         bool updated = repository.Update(new()
         {
             Id = productId,
             Name = "Gaming Mouse",
-            Price = 99.90m,
+            Description = "Gaming wireless mouse",
+            Weight = 0.12m,
+            Height = 3.20m,
+            Width = 6.50m,
+            Length = 12.00m,
         });
 
         Product? loaded = repository.GetById(productId);
@@ -52,7 +72,11 @@ public sealed class ProductRepositoryTests
         Assert.True(updated);
         Assert.NotNull(loaded);
         Assert.Equal("Gaming Mouse", loaded!.Name);
-        Assert.Equal(99.90m, loaded.Price);
+        Assert.Equal("Gaming wireless mouse", loaded.Description);
+        Assert.Equal(0.12m, loaded.Weight);
+        Assert.Equal(3.20m, loaded.Height);
+        Assert.Equal(6.50m, loaded.Width);
+        Assert.Equal(12.00m, loaded.Length);
     }
 
     [Fact]
@@ -64,7 +88,15 @@ public sealed class ProductRepositoryTests
         TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
         ProductRepository repository = new(connectionString);
 
-        int productId = repository.Create(new() { Name = "Keyboard", Price = 35m });
+        int productId = repository.Create(new()
+        {
+            Name = "Keyboard",
+            Description = "Mechanical keyboard",
+            Weight = 0.90m,
+            Height = 4.00m,
+            Width = 14.00m,
+            Length = 45.00m,
+        });
 
         bool deleted = repository.Delete(productId);
         Product? loaded = repository.GetById(productId);
@@ -82,8 +114,24 @@ public sealed class ProductRepositoryTests
         TestDatabaseHelper.EnsureDatabaseObjects(connectionString);
         ProductRepository repository = new(connectionString);
 
-        repository.Create(new() { Name = "Phone", Price = 500m });
-        repository.Create(new() { Name = "Tablet", Price = 700m });
+        repository.Create(new()
+        {
+            Name = "Phone",
+            Description = "Smartphone",
+            Weight = 0.20m,
+            Height = 0.80m,
+            Width = 7.50m,
+            Length = 15.00m,
+        });
+        repository.Create(new()
+        {
+            Name = "Tablet",
+            Description = "Tablet device",
+            Weight = 0.45m,
+            Height = 0.90m,
+            Width = 17.00m,
+            Length = 25.00m,
+        });
 
         IReadOnlyCollection<Product> products = repository.GetAll();
 
