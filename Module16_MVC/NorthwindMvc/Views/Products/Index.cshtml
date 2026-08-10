@@ -9,7 +9,10 @@
         <p class="eyebrow mb-2">Northwind data</p>
         <h1 class="h2 mb-0">Products</h1>
     </div>
-    <p class="text-muted mb-0">Supplier and category names are shown instead of raw references.</p>
+    <div class="d-flex align-items-center gap-3">
+        <p class="text-muted mb-0">Supplier and category names are shown instead of raw references.</p>
+        <a class="btn btn-primary" asp-action="Create">New product</a>
+    </div>
 </div>
 
 <div class="table-responsive bg-white">
@@ -26,6 +29,7 @@
                 <th class="text-end">Units On Order</th>
                 <th class="text-end">Reorder Level</th>
                 <th>Discontinued</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +46,9 @@
                     <td class="text-end">@(product.UnitsOnOrder?.ToString() ?? "—")</td>
                     <td class="text-end">@(product.ReorderLevel?.ToString() ?? "—")</td>
                     <td>@(product.Discontinued ? "Yes" : "No")</td>
+                    <td class="text-end">
+                        <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@product.ProductID">Edit</a>
+                    </td>
                 </tr>
             }
         </tbody>
