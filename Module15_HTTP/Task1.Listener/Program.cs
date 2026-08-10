@@ -51,6 +51,9 @@ try
             case "MyNameByHeader":
                 await GetMyNameByHeaderAsync(context, myName);
                 break;
+            case "MyNameByCookies":
+                await GetMyNameByCookiesAsync(context, myName);
+                break;
             case "Information":
                 await WriteStatusOnlyResponseAsync(context, HttpStatusCode.SwitchingProtocols);
                 break;
@@ -85,6 +88,14 @@ static Task GetMyNameByHeaderAsync(HttpListenerContext context, string name)
 {
     context.Response.StatusCode = (int)HttpStatusCode.OK;
     context.Response.AddHeader("X-MyName", name);
+    context.Response.ContentLength64 = 0;
+    return context.Response.OutputStream.DisposeAsync().AsTask();
+}
+
+static Task GetMyNameByCookiesAsync(HttpListenerContext context, string name)
+{
+    context.Response.StatusCode = (int)HttpStatusCode.OK;
+    context.Response.Cookies.Add(new Cookie("MyName", name) { Path = "/" });
     context.Response.ContentLength64 = 0;
     return context.Response.OutputStream.DisposeAsync().AsTask();
 }
