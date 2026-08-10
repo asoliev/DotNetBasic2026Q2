@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Task1.Listener/Task1.Listener.csproj" />
+  <Project Path="Task1.Client/Task1.Client.csproj" />
+</Solution>
