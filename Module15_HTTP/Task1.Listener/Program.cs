@@ -48,6 +48,9 @@ try
             case "MyName":
                 await GetMyNameAsync(context, myName);
                 break;
+            case "MyNameByHeader":
+                await GetMyNameByHeaderAsync(context, myName);
+                break;
             case "Information":
                 await WriteStatusOnlyResponseAsync(context, HttpStatusCode.SwitchingProtocols);
                 break;
@@ -77,6 +80,14 @@ finally
 await exitTask;
 
 static Task GetMyNameAsync(HttpListenerContext context, string name) => WriteResponseAsync(context, HttpStatusCode.OK, name);
+
+static Task GetMyNameByHeaderAsync(HttpListenerContext context, string name)
+{
+    context.Response.StatusCode = (int)HttpStatusCode.OK;
+    context.Response.AddHeader("X-MyName", name);
+    context.Response.ContentLength64 = 0;
+    return context.Response.OutputStream.DisposeAsync().AsTask();
+}
 
 static async Task WriteResponseAsync(HttpListenerContext context, HttpStatusCode statusCode, string content)
 {
