@@ -1,0 +1,49 @@
+@model IReadOnlyList<NorthwindMvc.Models.ProductListItem>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-4">
+    <div>
+        <p class="eyebrow mb-2">Northwind data</p>
+        <h1 class="h2 mb-0">Products</h1>
+    </div>
+    <p class="text-muted mb-0">Supplier and category names are shown instead of raw references.</p>
+</div>
+
+<div class="table-responsive bg-white">
+    <table class="table table-striped table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Supplier</th>
+                <th>Category</th>
+                <th>Quantity Per Unit</th>
+                <th class="text-end">Unit Price</th>
+                <th class="text-end">Units In Stock</th>
+                <th class="text-end">Units On Order</th>
+                <th class="text-end">Reorder Level</th>
+                <th>Discontinued</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.ProductID</td>
+                    <td class="fw-semibold">@product.ProductName</td>
+                    <td>@product.SupplierName</td>
+                    <td>@(product.CategoryName ?? "—")</td>
+                    <td>@(product.QuantityPerUnit ?? "—")</td>
+                    <td class="text-end">@(product.UnitPrice?.ToString("C") ?? "—")</td>
+                    <td class="text-end">@(product.UnitsInStock?.ToString() ?? "—")</td>
+                    <td class="text-end">@(product.UnitsOnOrder?.ToString() ?? "—")</td>
+                    <td class="text-end">@(product.ReorderLevel?.ToString() ?? "—")</td>
+                    <td>@(product.Discontinued ? "Yes" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

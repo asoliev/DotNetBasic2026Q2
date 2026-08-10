@@ -1,0 +1,35 @@
+@model IReadOnlyList<NorthwindMvc.Models.CategoryListItem>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-4">
+    <div>
+        <p class="eyebrow mb-2">Northwind data</p>
+        <h1 class="h2 mb-0">Categories</h1>
+    </div>
+    <p class="text-muted mb-0">Categories are listed without the image column.</p>
+</div>
+
+<div class="table-responsive bg-white">
+    <table class="table table-striped table-hover align-middle mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.CategoryID</td>
+                    <td class="fw-semibold">@category.CategoryName</td>
+                    <td>@(category.Description ?? "—")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
