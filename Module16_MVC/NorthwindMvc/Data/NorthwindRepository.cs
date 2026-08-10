@@ -3,15 +3,17 @@ using NorthwindMvc.Models;
 
 namespace NorthwindMvc.Data;
 
-public sealed class NorthwindRepository
+public sealed class NorthwindRepository(IConfiguration configuration)
 {
-    private const string ConnectionString = "Server=localhost;Database=Northwind;Trusted_Connection=True;TrustServerCertificate=True";
+    private readonly string connectionString = configuration.GetConnectionString("Northwind")
+            ?? throw new InvalidOperationException("Connection string 'Northwind' was not found.");
+    private readonly int maximumProducts = configuration.GetValue<int?>("Products:Maximum") ?? 0;
 
     public async Task<IReadOnlyList<CategoryListItem>> GetCategoriesAsync()
     {
         List<CategoryListItem> categories = [];
 
-        await using SqlConnection connection = new(ConnectionString);
+        await using SqlConnection connection = new(connectionString);
         await connection.OpenAsync();
 
         await using SqlCommand command = connection.CreateCommand();
@@ -36,13 +38,14 @@ public sealed class NorthwindRepository
     public async Task<IReadOnlyList<ProductListItem>> GetProductsAsync()
     {
         List<ProductListItem> products = [];
+        string topClause = maximumProducts > 0 ? "TOP (@MaximumProducts)" : string.Empty;
 
-        await using var connection = new SqlConnection(ConnectionString);
+        await using var connection = new SqlConnection(connectionString);
         await connection.OpenAsync();
 
         await using SqlCommand command = connection.CreateCommand();
-        command.CommandText = """
-            SELECT
+        command.CommandText = $"""
+            SELECT {topClause}
                 P.ProductID,
                 P.ProductName,
                 S.CompanyName AS SupplierName,
@@ -58,6 +61,11 @@ public sealed class NorthwindRepository
             LEFT JOIN Categories AS C ON C.CategoryID = P.CategoryID
             ORDER BY P.ProductName;
             """;
+
+        if (maximumProducts > 0)
+        {
+            command.Parameters.AddWithValue("@MaximumProducts", maximumProducts);
+        }
 
         await using SqlDataReader reader = await command.ExecuteReaderAsync();
         while (await reader.ReadAsync())
