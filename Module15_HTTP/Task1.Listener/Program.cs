@@ -43,10 +43,30 @@ try
         string resourcePath = context.Request.Url?.AbsolutePath.Trim('/') ?? string.Empty;
         Console.WriteLine($"Request received: {resourcePath}");
 
-        if (resourcePath.Equals("MyName", StringComparison.OrdinalIgnoreCase))
-            await GetMyNameAsync(context, myName);
-        else
-            await WriteResponseAsync(context, HttpStatusCode.NotFound, "Resource not found.");
+        switch (resourcePath)
+        {
+            case "MyName":
+                await GetMyNameAsync(context, myName);
+                break;
+            case "Information":
+                await WriteStatusOnlyResponseAsync(context, HttpStatusCode.SwitchingProtocols);
+                break;
+            case "Success":
+                await WriteResponseAsync(context, HttpStatusCode.OK, "Success");
+                break;
+            case "Redirection":
+                await WriteResponseAsync(context, HttpStatusCode.Found, "Redirection");
+                break;
+            case "ClientError":
+                await WriteResponseAsync(context, HttpStatusCode.BadRequest, "Client error");
+                break;
+            case "ServerError":
+                await WriteResponseAsync(context, HttpStatusCode.InternalServerError, "Server error");
+                break;
+            default:
+                await WriteResponseAsync(context, HttpStatusCode.NotFound, "Resource not found.");
+                break;
+        }
     }
 }
 finally
@@ -67,4 +87,11 @@ static async Task WriteResponseAsync(HttpListenerContext context, HttpStatusCode
 
     await using Stream output = context.Response.OutputStream;
     await output.WriteAsync(buffer);
+}
+
+static Task WriteStatusOnlyResponseAsync(HttpListenerContext context, HttpStatusCode statusCode)
+{
+    context.Response.StatusCode = (int)statusCode;
+    context.Response.ContentLength64 = 0;
+    return context.Response.OutputStream.DisposeAsync().AsTask();
 }
