@@ -27,9 +27,7 @@ public class ProductsController(NorthwindRepository repository) : Controller
         await PopulateLookupsAsync(model);
 
         if (!ModelState.IsValid)
-        {
             return View(model);
-        }
 
         await repository.CreateProductAsync(model);
         return RedirectToAction(nameof(Index));
@@ -40,9 +38,7 @@ public class ProductsController(NorthwindRepository repository) : Controller
         ProductEditViewModel? model = await repository.GetProductForEditAsync(id);
 
         if (model is null)
-        {
             return NotFound();
-        }
 
         await PopulateLookupsAsync(model);
         return View(model);
@@ -55,15 +51,11 @@ public class ProductsController(NorthwindRepository repository) : Controller
         await PopulateLookupsAsync(model);
 
         if (!ModelState.IsValid)
-        {
             return View(model);
-        }
 
         bool updated = await repository.UpdateProductAsync(model);
         if (!updated)
-        {
             return NotFound();
-        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -80,18 +72,18 @@ public class ProductsController(NorthwindRepository repository) : Controller
         IReadOnlyList<CategoryListItem> categories = await repository.GetCategoriesAsync();
         IReadOnlyList<SupplierListItem> suppliers = await repository.GetSuppliersAsync();
 
-        model.Categories = categories.Select(category => new SelectListItem
+        model.Categories = [.. categories.Select(category => new SelectListItem
         {
             Value = category.CategoryID.ToString(),
             Text = category.CategoryName,
             Selected = category.CategoryID == model.CategoryID
-        }).ToList();
+        })];
 
-        model.Suppliers = suppliers.Select(supplier => new SelectListItem
+        model.Suppliers = [.. suppliers.Select(supplier => new SelectListItem
         {
             Value = supplier.SupplierID.ToString(),
             Text = supplier.CompanyName,
             Selected = supplier.SupplierID == model.SupplierID
-        }).ToList();
+        })];
     }
 }
