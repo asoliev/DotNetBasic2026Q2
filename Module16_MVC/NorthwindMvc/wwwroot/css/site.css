@@ -63,6 +63,14 @@ body {
   box-shadow: 0 0.75rem 2rem rgba(31, 41, 55, 0.08);
 }
 
+.products-table-shell .table > :not(caption) > * > :first-child {
+  padding-left: 1.25rem;
+}
+
+.products-table-shell .table > :not(caption) > * > :last-child {
+  padding-right: 1.25rem;
+}
+
 .products-table {
   min-width: 1250px;
 }
@@ -103,7 +111,7 @@ body {
 }
 
 .products-col-category {
-  width: 10%;
+  width: 7%;
   white-space: nowrap;
 }
 
@@ -112,9 +120,17 @@ body {
   white-space: nowrap;
 }
 
-.products-col-narrow {
-  min-width: 6.5rem;
-  width: 7.5rem;
+.products-col-numeric {
+  min-width: 6rem;
+  width: 6rem;
+  white-space: nowrap;
+}
+
+.products-table thead th.products-col-numeric {
+  white-space: normal;
+}
+
+.products-table tbody td.products-col-numeric {
   white-space: nowrap;
 }
 
@@ -133,16 +149,32 @@ body {
   height: 1rem;
 }
 
-.detail-grid dt {
-  color: #6b7280;
-  font-weight: 600;
-}
-
 .category-image-frame {
   padding: 0.75rem;
   background: #f8fafc;
   border: 1px solid rgba(31, 41, 55, 0.08);
   border-radius: 1rem;
+}
+
+.product-details-card {
+  width: min(100%, 920px);
+}
+
+.product-details-card > .card-body {
+  overflow-x: auto;
+}
+
+.product-details-table {
+  width: 100%;
+}
+
+.product-details-table th {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.product-details-table td {
+  width: auto;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {

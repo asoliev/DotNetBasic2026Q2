@@ -20,6 +20,7 @@ public sealed class ProductEditViewModel
     [StringLength(20)]
     public string? QuantityPerUnit { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
     [Range(typeof(decimal), "0", "999999")]
     public decimal? UnitPrice { get; set; }
 

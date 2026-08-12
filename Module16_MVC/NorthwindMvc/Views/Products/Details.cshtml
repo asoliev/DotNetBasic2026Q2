@@ -14,36 +14,51 @@
 
 <div class="card shadow-sm border-0">
     <div class="card-body p-4">
-        <dl class="row mb-0 detail-grid">
-            <dt class="col-sm-3">Product ID</dt>
-            <dd class="col-sm-9">@Model.ProductID</dd>
-
-            <dt class="col-sm-3">Product Name</dt>
-            <dd class="col-sm-9 fw-semibold">@Model.ProductName</dd>
-
-            <dt class="col-sm-3">Supplier</dt>
-            <dd class="col-sm-9">@Model.SupplierName</dd>
-
-            <dt class="col-sm-3">Category</dt>
-            <dd class="col-sm-9">@(Model.CategoryName ?? "—")</dd>
-
-            <dt class="col-sm-3">Quantity Per Unit</dt>
-            <dd class="col-sm-9">@(Model.QuantityPerUnit ?? "—")</dd>
-
-            <dt class="col-sm-3">Unit Price</dt>
-            <dd class="col-sm-9">@(Model.UnitPrice?.ToString("0.##") ?? "—")</dd>
-
-            <dt class="col-sm-3">Units In Stock</dt>
-            <dd class="col-sm-9">@(Model.UnitsInStock?.ToString() ?? "—")</dd>
-
-            <dt class="col-sm-3">Units On Order</dt>
-            <dd class="col-sm-9">@(Model.UnitsOnOrder?.ToString() ?? "—")</dd>
-
-            <dt class="col-sm-3">Reorder Level</dt>
-            <dd class="col-sm-9">@(Model.ReorderLevel?.ToString() ?? "—")</dd>
-
-            <dt class="col-sm-3">Discontinued</dt>
-            <dd class="col-sm-9">@(Model.Discontinued ? "Yes" : "No")</dd>
-        </dl>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <tbody>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Product ID</th>
+                        <td>@Model.ProductID</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Product Name</th>
+                        <td>@Model.ProductName</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Supplier</th>
+                        <td>@(Model.SupplierName ?? "—")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Category</th>
+                        <td>@(Model.CategoryName ?? "—")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Quantity Per Unit</th>
+                        <td>@(Model.QuantityPerUnit ?? "—")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Unit Price</th>
+                        <td>@(Model.UnitPrice?.ToString("0.##") ?? "—")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Units In Stock</th>
+                        <td>@(Model.UnitsInStock?.ToString() ?? "—")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Units On Order</th>
+                        <td>@(Model.UnitsOnOrder?.ToString() ?? "—")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Reorder Level</th>
+                        <td>@(Model.ReorderLevel?.ToString() ?? "—")</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-sm-3">Discontinued</th>
+                        <td>@(Model.Discontinued ? "Yes" : "No")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
