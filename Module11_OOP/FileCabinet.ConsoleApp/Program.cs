@@ -5,7 +5,7 @@ using FileCabinet.Infrastructure.Deserializers;
 using FileCabinet.Infrastructure.FileSystem;
 
 // Composition root
-var storagePath = args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "data");
+string storagePath = args.Length > 0 ? args[0] : Path.Combine(AppContext.BaseDirectory, "data");
 
 IDocumentDeserializer[] deserializers =
 [
@@ -15,7 +15,7 @@ IDocumentDeserializer[] deserializers =
     new MagazineDeserializer(),
 ];
 
-var cacheConfig = new DocumentCacheConfiguration()
+DocumentCacheConfiguration cacheConfig = new DocumentCacheConfiguration()
     .WithPolicy<Patent>(new NeverExpirePolicy())
     .WithPolicy<Book>(new TimedExpiryPolicy(TimeSpan.FromMinutes(5)))
     .WithPolicy<LocalizedBook>(new NeverExpirePolicy())
@@ -30,12 +30,12 @@ Console.WriteLine("Type a document number to search, or 'q' to quit.\n");
 while (true)
 {
     Console.Write("Document number: ");
-    var input = Console.ReadLine()?.Trim();
+    string? input = Console.ReadLine()?.Trim();
 
     if (string.IsNullOrEmpty(input) || input.Equals("q", StringComparison.OrdinalIgnoreCase))
         break;
 
-    var results = repository.Search(input);
+    IReadOnlyList<Document> results = repository.Search(input);
 
     if (results.Count == 0)
     {
@@ -43,7 +43,7 @@ while (true)
         continue;
     }
 
-    foreach (var doc in results)
+    foreach (Document doc in results)
     {
         Console.WriteLine(doc.ToString());
         Console.WriteLine();

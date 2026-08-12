@@ -22,5 +22,5 @@ public sealed class DocumentCacheConfiguration
     }
 
     public ICachePolicy GetPolicy(Type documentType) =>
-        _policies.TryGetValue(documentType, out var policy) ? policy : _defaultPolicy;
+        _policies.TryGetValue(documentType, out ICachePolicy? policy) ? policy : _defaultPolicy;
 }

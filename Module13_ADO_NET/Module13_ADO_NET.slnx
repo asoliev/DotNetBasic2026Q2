@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="AdoNetLibrary.Tests/AdoNetLibrary.Tests.csproj" />
+  <Project Path="AdoNetLibrary/AdoNetLibrary.csproj" />
+  <Project Path="AdoNetDb/Module13_ADO_NET.sqlproj" />
+</Solution>
