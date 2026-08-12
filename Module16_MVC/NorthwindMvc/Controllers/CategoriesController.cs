@@ -12,4 +12,14 @@ public class CategoriesController(NorthwindRepository repository) : Controller
         IReadOnlyList<CategoryListItem> categories = await repository.GetCategoriesAsync();
         return View(categories);
     }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        CategoryDetailsViewModel? model = await repository.GetCategoryDetailsAsync(id);
+
+        if (model is null)
+            return NotFound();
+
+        return View(model);
+    }
 }

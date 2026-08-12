@@ -9,7 +9,7 @@
         <p class="eyebrow mb-2">Northwind data</p>
         <h1 class="h2 mb-0">Categories</h1>
     </div>
-    <p class="text-muted mb-0">Categories are listed without the image column.</p>
+    <p class="text-muted mb-0">Open a category to see its full details and picture.</p>
 </div>
 
 <div class="table-responsive bg-white">
@@ -19,6 +19,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,13 @@
                     <td>@category.CategoryID</td>
                     <td class="fw-semibold">@category.CategoryName</td>
                     <td>@(category.Description ?? "—")</td>
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-outline-secondary icon-action" asp-action="Details" asp-route-id="@category.CategoryID" title="View info" aria-label="View info">
+                            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                <path d="M8 1.5a6.5 6.5 0 1 0 0 13a6.5 6.5 0 0 0 0-13Zm0 3a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5ZM6.9 6.5h1.2v5H6.9v-5Zm0 6h1.2v1.2H6.9v-1.2Z" fill="currentColor" />
+                            </svg>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>

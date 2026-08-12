@@ -5,13 +5,34 @@ using NorthwindMvc.Models;
 
 namespace NorthwindMvc.Controllers;
 
-public class ProductsController(NorthwindRepository repository) : Controller
+public class ProductsController(NorthwindRepository repository, IConfiguration configuration) : Controller
 {
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int? rowLimit = null)
     {
-        IReadOnlyList<ProductListItem> products = await repository.GetProductsAsync();
-        return View(products);
+        ViewData["FullWidth"] = true;
+
+        int configuredDefaultRowLimit = configuration.GetValue<int?>("Products:Maximum") ?? 0;
+        int selectedRowLimit = rowLimit ?? configuredDefaultRowLimit;
+
+        ProductListViewModel model = new()
+        {
+            RowLimit = selectedRowLimit,
+            RowLimitOptions = CreateRowLimitOptions(selectedRowLimit),
+            Products = await repository.GetProductsAsync(selectedRowLimit)
+        };
+
+        return View(model);
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        ProductDetailsViewModel? model = await repository.GetProductDetailsAsync(id);
+
+        if (model is null)
+            return NotFound();
+
+        return View(model);
     }
 
     public async Task<IActionResult> Create()
@@ -85,5 +106,19 @@ public class ProductsController(NorthwindRepository repository) : Controller
             Text = supplier.CompanyName,
             Selected = supplier.SupplierID == model.SupplierID
         })];
+    }
+
+    private IReadOnlyList<SelectListItem> CreateRowLimitOptions(int selectedRowLimit)
+    {
+        int[] configuredRowLimits = configuration.GetSection("Products:RowLimits").Get<int[]>() ?? [5, 10, 20, 30, 50, 100, 0];
+
+        return [.. configuredRowLimits
+            .Distinct()
+            .Select(rowLimit => new SelectListItem
+            {
+                Value = rowLimit.ToString(),
+                Text = rowLimit == 0 ? "Unlimited" : rowLimit.ToString(),
+                Selected = rowLimit == selectedRowLimit
+            })];
     }
 }

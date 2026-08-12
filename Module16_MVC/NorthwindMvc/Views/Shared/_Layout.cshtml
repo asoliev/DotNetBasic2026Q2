@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="~/NorthwindMvc.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @{ var fullWidth = ViewData["FullWidth"] as bool? == true; }
+    @{ var currentController = ViewContext.RouteData.Values["Controller"]?.ToString(); }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark app-nav border-bottom box-shadow mb-4">
             <div class="container-fluid">
@@ -19,22 +21,16 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
-                        </li>
-                    </ul>
+                    <div class="d-flex flex-wrap gap-2 ms-auto">
+                        <a class="btn btn-sm @(currentController == "Home" ? "btn-light text-dark" : "btn-outline-light")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="btn btn-sm @(currentController == "Categories" ? "btn-light text-dark" : "btn-outline-light")" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                        <a class="btn btn-sm @(currentController == "Products" ? "btn-light text-dark" : "btn-outline-light")" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="@(fullWidth ? "container-fluid px-4 px-xl-5" : "container")">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

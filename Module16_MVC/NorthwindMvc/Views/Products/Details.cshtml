@@ -1,0 +1,49 @@
+@model NorthwindMvc.Models.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = $"Product {Model.ProductName}";
+}
+
+<div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-4">
+    <div>
+        <p class="eyebrow mb-2">Northwind data</p>
+        <h1 class="h2 mb-0">Product info</h1>
+    </div>
+    <a class="btn btn-outline-secondary" asp-action="Index">Back to list</a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+        <dl class="row mb-0 detail-grid">
+            <dt class="col-sm-3">Product ID</dt>
+            <dd class="col-sm-9">@Model.ProductID</dd>
+
+            <dt class="col-sm-3">Product Name</dt>
+            <dd class="col-sm-9 fw-semibold">@Model.ProductName</dd>
+
+            <dt class="col-sm-3">Supplier</dt>
+            <dd class="col-sm-9">@Model.SupplierName</dd>
+
+            <dt class="col-sm-3">Category</dt>
+            <dd class="col-sm-9">@(Model.CategoryName ?? "—")</dd>
+
+            <dt class="col-sm-3">Quantity Per Unit</dt>
+            <dd class="col-sm-9">@(Model.QuantityPerUnit ?? "—")</dd>
+
+            <dt class="col-sm-3">Unit Price</dt>
+            <dd class="col-sm-9">@(Model.UnitPrice?.ToString("0.##") ?? "—")</dd>
+
+            <dt class="col-sm-3">Units In Stock</dt>
+            <dd class="col-sm-9">@(Model.UnitsInStock?.ToString() ?? "—")</dd>
+
+            <dt class="col-sm-3">Units On Order</dt>
+            <dd class="col-sm-9">@(Model.UnitsOnOrder?.ToString() ?? "—")</dd>
+
+            <dt class="col-sm-3">Reorder Level</dt>
+            <dd class="col-sm-9">@(Model.ReorderLevel?.ToString() ?? "—")</dd>
+
+            <dt class="col-sm-3">Discontinued</dt>
+            <dd class="col-sm-9">@(Model.Discontinued ? "Yes" : "No")</dd>
+        </dl>
+    </div>
+</div>

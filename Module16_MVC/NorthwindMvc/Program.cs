@@ -1,8 +1,20 @@
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization();
 builder.Services.AddSingleton<NorthwindMvc.Data.NorthwindRepository>();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    CultureInfo[] supportedCultures = [.. CultureInfo.GetCultures(CultureTypes.SpecificCultures)];
+
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
 
 WebApplication app = builder.Build();
 
@@ -15,6 +27,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRequestLocalization();
 app.UseRouting();
 
 app.UseAuthorization();
