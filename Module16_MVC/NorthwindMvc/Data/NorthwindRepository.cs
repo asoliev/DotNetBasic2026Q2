@@ -63,9 +63,7 @@ public sealed class NorthwindRepository(IConfiguration configuration)
             """;
 
         if (maximumProducts > 0)
-        {
             command.Parameters.AddWithValue("@MaximumProducts", maximumProducts);
-        }
 
         await using SqlDataReader reader = await command.ExecuteReaderAsync();
         while (await reader.ReadAsync())
@@ -127,9 +125,7 @@ public sealed class NorthwindRepository(IConfiguration configuration)
 
         await using SqlDataReader reader = await command.ExecuteReaderAsync();
         if (!await reader.ReadAsync())
-        {
             return null;
-        }
 
         return new ProductEditViewModel
         {
