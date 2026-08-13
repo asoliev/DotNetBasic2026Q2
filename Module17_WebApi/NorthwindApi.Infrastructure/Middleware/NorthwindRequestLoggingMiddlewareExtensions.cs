@@ -57,10 +57,10 @@ public static class NorthwindRequestLoggingMiddlewareExtensions
     }
 
     private static LogLevel GetLogLevel(int statusCode) => statusCode switch
-        {
-            >= 500 => LogLevel.Error,
-            >= 400 => LogLevel.Warning,
-            200 => LogLevel.Information,
-            _ => LogLevel.Debug
-        };
+    {
+        >= 500 => LogLevel.Error,
+        >= 400 => LogLevel.Warning,
+        200 => LogLevel.Information,
+        _ => LogLevel.Debug
+    };
 }

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApi.Contracts;
 using NorthwindApi.Models;
-using NorthwindApi.Services.Products;
 using NorthwindApi.Services.Common;
+using NorthwindApi.Services.Products;
 
 namespace NorthwindApi.Controllers;
 

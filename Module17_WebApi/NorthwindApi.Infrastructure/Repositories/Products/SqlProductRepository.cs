@@ -1,5 +1,5 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using NorthwindApi.Models;
 using NorthwindApi.Repositories.Common;
 using NorthwindApi.Services.Common;

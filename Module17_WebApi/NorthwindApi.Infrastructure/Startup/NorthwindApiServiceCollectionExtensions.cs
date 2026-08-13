@@ -19,8 +19,8 @@ public static class NorthwindApiServiceCollectionExtensions
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddHealthChecks()
-	        .AddCheck<ApiHealthCheck>("api")
-	        .AddCheck<DatabaseHealthCheck>("db");
+            .AddCheck<ApiHealthCheck>("api")
+            .AddCheck<DatabaseHealthCheck>("db");
 
         return services;
     }

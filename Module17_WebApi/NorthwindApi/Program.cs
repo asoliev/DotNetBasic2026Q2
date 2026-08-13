@@ -1,6 +1,6 @@
 using NorthwindApi.HealthChecks;
-using NorthwindApi.Infrastructure.Logging;
 using NorthwindApi.Infrastructure;
+using NorthwindApi.Infrastructure.Logging;
 using NorthwindApi.Middleware;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
