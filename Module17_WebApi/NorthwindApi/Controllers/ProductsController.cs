@@ -10,7 +10,17 @@ namespace NorthwindApi.Controllers;
 public sealed class ProductsController(IProductService service) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IReadOnlyList<Product>> GetAll() => Ok(service.GetAll());
+    public ActionResult<IReadOnlyList<Product>> GetAll([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] int? categoryId = null)
+    {
+        PagedResult<Product> result = service.GetAll(pageNumber, pageSize, categoryId);
+
+        Response.Headers["X-Total-Items"] = result.TotalItems.ToString();
+        Response.Headers["X-Total-Pages"] = result.TotalPages.ToString();
+        Response.Headers["X-Page-Number"] = result.PageNumber.ToString();
+        Response.Headers["X-Page-Size"] = result.PageSize.ToString();
+
+        return Ok(result.Items);
+    }
 
     [HttpGet("{id:int}")]
     public ActionResult<Product> GetById(int id) => this.ToGetActionResult(service.GetById(id));

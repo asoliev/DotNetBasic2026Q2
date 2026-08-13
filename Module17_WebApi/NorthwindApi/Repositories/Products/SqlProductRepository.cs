@@ -1,13 +1,14 @@
 using Microsoft.Data.SqlClient;
 using NorthwindApi.Models;
 using NorthwindApi.Repositories.Common;
+using NorthwindApi.Services.Common;
 
 namespace NorthwindApi.Repositories.Products;
 
 public sealed class SqlProductRepository(IConfiguration configuration)
     : SqlCrudRepositoryBase<Product>(configuration), IProductRepository
 {
-    public override IReadOnlyList<Product> GetAll() => GetProducts();
+    public override IReadOnlyList<Product> GetAll() => GetProducts().Items;
 
     public override Product? GetById(int id) => GetProduct(id);
 
@@ -17,25 +18,51 @@ public sealed class SqlProductRepository(IConfiguration configuration)
 
     public override bool Delete(int id) => DeleteProduct(id);
 
-    public IReadOnlyList<Product> GetProducts()
+    public PagedResult<Product> GetProducts(int pageNumber = 1, int pageSize = 10, int? categoryId = null)
+    {
+        using SqlConnection connection = CreateConnection();
+        int totalItems = GetProductCount(connection, categoryId);
+        List<Product> products = GetProductPage(connection, pageNumber, pageSize, categoryId);
+
+        return new PagedResult<Product>(products, totalItems, pageNumber, pageSize);
+    }
+
+    private static int GetProductCount(SqlConnection connection, int? categoryId)
+    {
+        const string countSql = """
+                                SELECT COUNT(1)
+                                FROM dbo.Products
+                                WHERE (@CategoryId IS NULL OR CategoryID = @CategoryId);
+                                """;
+
+        using SqlCommand countCommand = new(countSql, connection);
+        countCommand.Parameters.AddWithValue("@CategoryId", (object?)categoryId ?? DBNull.Value);
+
+        connection.Open();
+        return Convert.ToInt32(countCommand.ExecuteScalar());
+    }
+
+    private static List<Product> GetProductPage(SqlConnection connection, int pageNumber, int pageSize, int? categoryId)
     {
         const string sql = """
                            SELECT ProductID, ProductName, SupplierID, CategoryID, QuantityPerUnit,
                                   UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued
                            FROM dbo.Products
-                           ORDER BY ProductID;
+                           WHERE (@CategoryId IS NULL OR CategoryID = @CategoryId)
+                           ORDER BY ProductID
+                           OFFSET @OffsetRows ROWS FETCH NEXT @PageSize ROWS ONLY;
                            """;
 
-        using SqlConnection connection = CreateConnection();
         using SqlCommand command = new(sql, connection);
-        connection.Open();
+        command.Parameters.AddWithValue("@CategoryId", (object?)categoryId ?? DBNull.Value);
+        command.Parameters.AddWithValue("@OffsetRows", (pageNumber - 1) * pageSize);
+        command.Parameters.AddWithValue("@PageSize", pageSize);
+
         using SqlDataReader reader = command.ExecuteReader();
 
         List<Product> products = [];
         while (reader.Read())
-        {
             products.Add(MapProduct(reader));
-        }
 
         return products;
     }

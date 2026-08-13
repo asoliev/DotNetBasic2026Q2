@@ -5,7 +5,7 @@ namespace NorthwindApi.Services.Products;
 
 public interface IProductService
 {
-    IReadOnlyList<Product> GetAll();
+    PagedResult<Product> GetAll(int pageNumber = 1, int pageSize = 10, int? categoryId = null);
 
     ServiceResult<Product> GetById(int id);
 

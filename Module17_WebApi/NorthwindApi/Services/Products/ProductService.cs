@@ -7,7 +7,13 @@ namespace NorthwindApi.Services.Products;
 
 public sealed class ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository) : IProductService
 {
-    public IReadOnlyList<Product> GetAll() => productRepository.GetProducts();
+    public PagedResult<Product> GetAll(int pageNumber = 1, int pageSize = 10, int? categoryId = null)
+    {
+        int normalizedPageNumber = pageNumber < 1 ? 1 : pageNumber;
+        int normalizedPageSize = pageSize < 1 ? 10 : pageSize;
+
+        return productRepository.GetProducts(normalizedPageNumber, normalizedPageSize, categoryId);
+    }
 
     public ServiceResult<Product> GetById(int id)
     {
