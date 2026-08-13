@@ -1,60 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApi.Models;
-using NorthwindApi.Repositories;
+using NorthwindApi.Services.Categories;
+using NorthwindApi.Services.Common;
 
 namespace NorthwindApi.Controllers;
 
 [ApiController]
 [Route("api/categories")]
-public sealed class CategoriesController(INorthwindRepository repository) : ControllerBase
+public sealed class CategoriesController(ICategoryService service) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IReadOnlyList<Category>> GetAll()
-    {
-        return Ok(repository.GetCategories());
-    }
+    public ActionResult<IReadOnlyList<Category>> GetAll() => Ok(service.GetAll());
 
     [HttpGet("{id:int}")]
-    public ActionResult<Category> GetById(int id)
-    {
-        Category? category = repository.GetCategory(id);
-        return category is null ? NotFound() : Ok(category);
-    }
+    public ActionResult<Category> GetById(int id) => this.ToGetActionResult(service.GetById(id));
 
     [HttpPost]
     public ActionResult<Category> Create([FromBody] CategoryUpsertRequest request)
     {
-        Category created = repository.CreateCategory(new Category
-        {
-            CategoryName = request.CategoryName,
-            Description = request.Description
-        });
-
-        return CreatedAtAction(nameof(GetById), new { id = created.CategoryId }, created);
+        ServiceResult<Category> result = service.Create(request);
+        return this.ToCreatedActionResult(result, nameof(GetById), new { id = result.Value!.CategoryId });
     }
 
     [HttpPut("{id:int}")]
     public IActionResult Update(int id, [FromBody] CategoryUpsertRequest request)
-    {
-        if (repository.GetCategory(id) is null)
-        {
-            return NotFound();
-        }
-
-        bool updated = repository.UpdateCategory(new Category
-        {
-            CategoryId = id,
-            CategoryName = request.CategoryName,
-            Description = request.Description
-        });
-
-        return updated ? NoContent() : NotFound();
-    }
+        => this.ToMutationActionResult(service.Update(id, request));
 
     [HttpDelete("{id:int}")]
-    public IActionResult Delete(int id)
-    {
-        bool deleted = repository.DeleteCategory(id);
-        return deleted ? NoContent() : Conflict("Delete the products in the category first.");
-    }
+    public IActionResult Delete(int id) => this.ToMutationActionResult(service.Delete(id));
 }

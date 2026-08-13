@@ -1,86 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 using NorthwindApi.Models;
-using NorthwindApi.Repositories;
+using NorthwindApi.Services.Products;
+using NorthwindApi.Services.Common;
 
 namespace NorthwindApi.Controllers;
 
 [ApiController]
 [Route("api/products")]
-public sealed class ProductsController(INorthwindRepository repository) : ControllerBase
+public sealed class ProductsController(IProductService service) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IReadOnlyList<Product>> GetAll()
-    {
-        return Ok(repository.GetProducts());
-    }
+    public ActionResult<IReadOnlyList<Product>> GetAll() => Ok(service.GetAll());
 
     [HttpGet("{id:int}")]
-    public ActionResult<Product> GetById(int id)
-    {
-        Product? product = repository.GetProduct(id);
-        return product is null ? NotFound() : Ok(product);
-    }
+    public ActionResult<Product> GetById(int id) => this.ToGetActionResult(service.GetById(id));
 
     [HttpPost]
     public ActionResult<Product> Create([FromBody] ProductUpsertRequest request)
     {
-        if (request.CategoryId is not null && repository.GetCategory(request.CategoryId.Value) is null)
-        {
-            ModelState.AddModelError(nameof(request.CategoryId), "The specified category does not exist.");
-            return ValidationProblem(ModelState);
-        }
-
-        Product created = repository.CreateProduct(new Product
-        {
-            ProductName = request.ProductName,
-            SupplierId = request.SupplierId,
-            CategoryId = request.CategoryId,
-            QuantityPerUnit = request.QuantityPerUnit,
-            UnitPrice = request.UnitPrice,
-            UnitsInStock = request.UnitsInStock,
-            UnitsOnOrder = request.UnitsOnOrder,
-            ReorderLevel = request.ReorderLevel,
-            Discontinued = request.Discontinued
-        });
-
-        return CreatedAtAction(nameof(GetById), new { id = created.ProductId }, created);
+        ServiceResult<Product> result = service.Create(request);
+        return this.ToCreatedActionResult(result, nameof(GetById), new { id = result.Value!.ProductId });
     }
 
     [HttpPut("{id:int}")]
     public IActionResult Update(int id, [FromBody] ProductUpsertRequest request)
-    {
-        if (repository.GetProduct(id) is null)
-        {
-            return NotFound();
-        }
-
-        if (request.CategoryId is not null && repository.GetCategory(request.CategoryId.Value) is null)
-        {
-            ModelState.AddModelError(nameof(request.CategoryId), "The specified category does not exist.");
-            return ValidationProblem(ModelState);
-        }
-
-        bool updated = repository.UpdateProduct(new Product
-        {
-            ProductId = id,
-            ProductName = request.ProductName,
-            SupplierId = request.SupplierId,
-            CategoryId = request.CategoryId,
-            QuantityPerUnit = request.QuantityPerUnit,
-            UnitPrice = request.UnitPrice,
-            UnitsInStock = request.UnitsInStock,
-            UnitsOnOrder = request.UnitsOnOrder,
-            ReorderLevel = request.ReorderLevel,
-            Discontinued = request.Discontinued
-        });
-
-        return updated ? NoContent() : NotFound();
-    }
+        => this.ToMutationActionResult(service.Update(id, request));
 
     [HttpDelete("{id:int}")]
-    public IActionResult Delete(int id)
-    {
-        bool deleted = repository.DeleteProduct(id);
-        return deleted ? NoContent() : NotFound();
-    }
+    public IActionResult Delete(int id) => this.ToMutationActionResult(service.Delete(id));
 }
