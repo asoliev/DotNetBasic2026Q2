@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/Domain/Module14_ORM.Domain.csproj" />
+  <Project Path="src/Dapper/Module14_ORM.Dapper.csproj" />
+  <Project Path="src/EfCore/Module14_ORM.EfCore.csproj" />
+  <Project Path="tests/Module14_ORM.Tests.csproj" />
+</Solution>
