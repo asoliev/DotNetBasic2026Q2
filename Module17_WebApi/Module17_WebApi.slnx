@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="NorthwindApi/NorthwindApi.csproj" />
+  <Project Path="NorthwindApiConsumer/NorthwindApiConsumer.csproj" />
+  <Project Path="NorthwindApiConsumer.Tests/NorthwindApiConsumer.Tests.csproj" />
 </Solution>
