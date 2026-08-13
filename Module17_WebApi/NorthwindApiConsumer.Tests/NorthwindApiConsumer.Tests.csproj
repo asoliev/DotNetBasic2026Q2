@@ -6,12 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
     <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestAdapter" Version="3.10.2" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.10.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <ProjectReference Include="..\NorthwindApi.Contracts\NorthwindApi.Contracts.csproj" />
+    <ProjectReference Include="..\NorthwindApi.Application\NorthwindApi.Application.csproj" />
+    <ProjectReference Include="..\NorthwindApi\NorthwindApi.csproj" />
+    <PackageReference Include="MSTest" Version="4.3.3" />
   </ItemGroup>
 
   <ItemGroup>

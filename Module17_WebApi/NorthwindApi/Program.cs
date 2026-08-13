@@ -10,7 +10,7 @@ builder.Services.AddNorthwindApiServices();
 
 WebApplication app = builder.Build();
 
-ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
+ILogger logger = app.Logger;
 
 app.UseHttpsRedirection();
 app.UseNorthwindRequestLogging(logger);

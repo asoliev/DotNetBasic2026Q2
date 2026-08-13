@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json;
+using NorthwindApi.Contracts;
 
 string baseUrl = args.Length > 0
     ? args[0]
@@ -177,16 +178,3 @@ static string ReadBaseUrlFromAppSettings()
     return root?["NorthwindApi"]?["BaseUrl"]?.GetValue<string>() ?? "http://127.0.0.1:5055";
 }
 
-sealed record CategoryDto(int CategoryId, string CategoryName, string? Description);
-
-sealed record ProductDto(
-    int ProductId,
-    string ProductName,
-    int? SupplierId,
-    int? CategoryId,
-    string? QuantityPerUnit,
-    decimal? UnitPrice,
-    short? UnitsInStock,
-    short? UnitsOnOrder,
-    short? ReorderLevel,
-    bool Discontinued);

@@ -2,6 +2,7 @@ using System.Net.Http.Json;
 using System.Xml.Linq;
 using System.Text.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NorthwindApi.Contracts;
 
 namespace NorthwindApiConsumer.Tests;
 
@@ -49,8 +50,8 @@ public sealed class ApiConsumerTests
     public async Task MutationFlow_CreatesUpdatesAndDeletesTemporaryRecords()
     {
         string stamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
-        string categoryName = $"MSTest Category {stamp}";
-        string productName = $"MSTest Product {stamp}";
+        string categoryName = $"C{stamp[^6..]}";
+        string productName = $"P{stamp}";
 
         CategoryDto createdCategory = await PostAsync<CategoryDto>("/api/categories", new
         {
@@ -141,20 +142,6 @@ public sealed class ApiConsumerTests
         return JsonSerializer.Deserialize<T>(content, jsonOptions)!
             ?? throw new InvalidOperationException("Could not deserialize GET response.");
     }
-
-    private sealed record CategoryDto(int CategoryId, string CategoryName, string? Description);
-
-    private sealed record ProductDto(
-        int ProductId,
-        string ProductName,
-        int? SupplierId,
-        int? CategoryId,
-        string? QuantityPerUnit,
-        decimal? UnitPrice,
-        short? UnitsInStock,
-        short? UnitsOnOrder,
-        short? ReorderLevel,
-        bool Discontinued);
 
     private static string ReadBaseUrlFromRunSettings()
     {

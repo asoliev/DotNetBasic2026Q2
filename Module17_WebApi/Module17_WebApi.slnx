@@ -1,4 +1,8 @@
 <Solution>
+  <Project Path="NorthwindApi.Contracts/NorthwindApi.Contracts.csproj" />
+  <Project Path="NorthwindApi.Domain/NorthwindApi.Domain.csproj" />
+  <Project Path="NorthwindApi.Application/NorthwindApi.Application.csproj" />
+  <Project Path="NorthwindApi.Infrastructure/NorthwindApi.Infrastructure.csproj" />
   <Project Path="NorthwindApi/NorthwindApi.csproj" />
   <Project Path="NorthwindApiConsumer/NorthwindApiConsumer.csproj" />
   <Project Path="NorthwindApiConsumer.Tests/NorthwindApiConsumer.Tests.csproj" />

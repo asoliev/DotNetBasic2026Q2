@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NorthwindApi.Contracts;
 using NorthwindApi.Models;
 using NorthwindApi.Services.Categories;
 using NorthwindApi.Services.Common;

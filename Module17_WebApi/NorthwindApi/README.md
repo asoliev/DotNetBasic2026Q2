@@ -2,6 +2,14 @@
 
 This project is the Task 1 and Task 2 solution for the Module 17 Web API assignment. It exposes a REST API over the Northwind database and includes pagination and filtering for the product list endpoint.
 
+The API is now split into layered projects:
+
+- `NorthwindApi.Contracts` for shared DTOs and request contracts
+- `NorthwindApi.Domain` for the Northwind entities
+- `NorthwindApi.Application` for services, repository abstractions, and shared results
+- `NorthwindApi.Infrastructure` for SQL repositories, logging, middleware, and health checks
+- `NorthwindApi` as the thin ASP.NET Core host
+
 ## What is included
 
 - `GET /api/categories` and `GET /api/categories/{id}`
@@ -95,12 +103,12 @@ Log files are written to the `logs/` folder.
 ## Project structure
 
 - `Controllers/` - API controllers for categories and products
-- `Models/` - request and response models
-- `Repositories/` - SQL Server data access
-- `Services/` - service layer and shared result helpers
-- `HealthChecks/` - API and database health checks
-- `Middleware/` - request logging middleware
-- `Infrastructure/` - DI and Serilog setup
+- `Services/Common/` - ASP.NET-specific result mapping helpers
+- `Properties/` - launch settings for local development
+- `NorthwindApi.Contracts/` - shared request and response models used by the API and consumers
+- `NorthwindApi.Domain/` - domain entities shared by services and repositories
+- `NorthwindApi.Application/` - service interfaces, implementations, and repository abstractions
+- `NorthwindApi.Infrastructure/` - SQL Server repositories, logging, request logging middleware, and health checks
 
 ## Related consumers
 
@@ -108,4 +116,4 @@ Task 3 is implemented in the sibling projects:
 
 - `NorthwindApiConsumer` - console REST client
 - `NorthwindApiConsumer.Tests` - MSTest-based API consumer
-- `NorthwindApiConsumer.Contracts` - shared DTOs for the consumers
+- `NorthwindApi.Contracts` - shared DTOs and request contracts for the API and consumers

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -9,9 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\NorthwindApi.Contracts\NorthwindApi.Contracts.csproj" />
     <ProjectReference Include="..\NorthwindApi.Domain\NorthwindApi.Domain.csproj" />
-    <ProjectReference Include="..\NorthwindApi.Application\NorthwindApi.Application.csproj" />
-    <ProjectReference Include="..\NorthwindApi.Infrastructure\NorthwindApi.Infrastructure.csproj" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
   </ItemGroup>
 
 </Project>
