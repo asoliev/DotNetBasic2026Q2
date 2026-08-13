@@ -77,3 +77,47 @@ internal sealed class RecordingOrderStoredProcedureGateway : IOrderStoredProcedu
         return Task.FromResult(RowsAffectedToReturn);
     }
 }
+
+public sealed record OrderFilterGatewayTestCase(
+    OrderFilter Filter,
+    IReadOnlyList<Order> OrdersToReturn,
+    int RowsAffectedToReturn);
+
+public static class OrderFilterGatewayTestData
+{
+    public static TheoryData<OrderFilterGatewayTestCase> Cases => new()
+    {
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(Status: OrderStatus.Done),
+            [new Order { Id = 1, Status = OrderStatus.Done, ProductId = 11 }],
+            1),
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(Month: 8),
+            [new Order { Id = 2, Status = OrderStatus.Loading, ProductId = 12 }],
+            1),
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(Year: 2026),
+            [new Order { Id = 3, Status = OrderStatus.InProgress, ProductId = 13 }],
+            1),
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(ProductId: 14),
+            [new Order { Id = 4, Status = OrderStatus.Arrived, ProductId = 14 }],
+            1),
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(Month: 8, Year: 2026),
+            [new Order { Id = 5, Status = OrderStatus.Unloading, ProductId = 15 }],
+            1),
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(Status: OrderStatus.Cancelled, ProductId: 16),
+            [new Order { Id = 6, Status = OrderStatus.Cancelled, ProductId = 16 }],
+            1),
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(Month: 8, Status: OrderStatus.Done, Year: 2026, ProductId: 17),
+            [new Order { Id = 7, Status = OrderStatus.Done, ProductId = 17 }],
+            1),
+        new OrderFilterGatewayTestCase(
+            new OrderFilter(Status: OrderStatus.NotStarted, ProductId: 99),
+            Array.Empty<Order>(),
+            0),
+    };
+}

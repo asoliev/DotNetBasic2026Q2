@@ -57,8 +57,9 @@ public sealed class EfOrderRepositoryTests
         Assert.Null(await repository.GetByIdAsync(id, cancellationToken));
     }
 
-    [Fact]
-    public async Task FilterMethodsDelegateToGateway()
+    [Theory]
+    [MemberData(nameof(OrderFilterGatewayTestData.Cases), MemberType = typeof(OrderFilterGatewayTestData))]
+    public async Task FilterMethodsDelegateToGateway(OrderFilterGatewayTestCase testCase)
     {
         CancellationToken cancellationToken = TestContext.Current.CancellationToken;
 
@@ -69,23 +70,18 @@ public sealed class EfOrderRepositoryTests
         await using OrmDbContext dbContext = new(options);
         RecordingOrderStoredProcedureGateway gateway = new()
         {
-            OrdersToReturn =
-            [
-                new Order { Id = 7, Status = OrderStatus.Done, ProductId = 9 }
-            ],
-            RowsAffectedToReturn = 2,
+            OrdersToReturn = testCase.OrdersToReturn,
+            RowsAffectedToReturn = testCase.RowsAffectedToReturn,
         };
 
         EfOrderRepository repository = new(dbContext, gateway);
-        OrderFilter filter = new(Month: 8, Status: OrderStatus.Done, Year: 2026, ProductId: 9);
 
-        IReadOnlyList<Order> orders = await repository.GetFilteredAsync(filter, cancellationToken);
-        Assert.Single(orders);
-        Assert.Equal(7, orders[0].Id);
-        Assert.Equal(filter, gateway.LastFilter);
+        IReadOnlyList<Order> orders = await repository.GetFilteredAsync(testCase.Filter, cancellationToken);
+        Assert.Same(testCase.OrdersToReturn, orders);
+        Assert.Equal(testCase.Filter, gateway.LastFilter);
 
-        int deletedRows = await repository.DeleteFilteredAsync(filter, cancellationToken);
-        Assert.Equal(2, deletedRows);
-        Assert.Equal(filter, gateway.LastFilter);
+        int deletedRows = await repository.DeleteFilteredAsync(testCase.Filter, cancellationToken);
+        Assert.Equal(testCase.RowsAffectedToReturn, deletedRows);
+        Assert.Equal(testCase.Filter, gateway.LastFilter);
     }
 }
