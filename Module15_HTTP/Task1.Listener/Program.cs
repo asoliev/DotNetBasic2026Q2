@@ -17,7 +17,10 @@ Task exitTask = Task.Run(() =>
     {
         string? command = Console.ReadLine();
         if (string.Equals(command, "exit", StringComparison.OrdinalIgnoreCase))
+        {
+            listener.Stop();
             break;
+        }
     }
 });
 
