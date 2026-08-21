@@ -1,0 +1,5 @@
+#!/bin/sh
+
+set -e
+
+dotnet format Module17_WebApi/Module17_WebApi.slnx --verify-no-changes

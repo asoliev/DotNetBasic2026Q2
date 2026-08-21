@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NorthwindApi.Contracts\NorthwindApi.Contracts.csproj" />
+    <ProjectReference Include="..\NorthwindApi.Application\NorthwindApi.Application.csproj" />
+    <ProjectReference Include="..\NorthwindApi\NorthwindApi.csproj" />
+    <PackageReference Include="MSTest" Version="4.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NorthwindApiConsumer.runsettings" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
