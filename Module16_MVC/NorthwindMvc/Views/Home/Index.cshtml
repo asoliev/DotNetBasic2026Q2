@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Northwind Home";
+}
+
+<div class="hero-panel p-5 rounded-4">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+            <p class="eyebrow mb-2">Module 16 MVC</p>
+            <h1 class="display-5 fw-bold mb-3">Northwind product catalog</h1>
+            <p class="lead mb-4">
+                Browse the Northwind categories and products through a simple ASP.NET Core MVC site.
+                The product list shows supplier and category names instead of raw foreign keys.
+            </p>
+            <div class="d-flex flex-wrap gap-3">
+                <a class="btn btn-primary btn-lg" asp-controller="Products" asp-action="Index">View products</a>
+                <a class="btn btn-outline-secondary btn-lg" asp-controller="Categories" asp-action="Index">View categories</a>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="hero-card shadow-sm p-4 rounded-4">
+                <h2 class="h5 mb-3">What is included</h2>
+                <ul class="feature-list mb-0">
+                    <li>Home page with navigation</li>
+                    <li>Categories list without images</li>
+                    <li>Products table with all fields</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

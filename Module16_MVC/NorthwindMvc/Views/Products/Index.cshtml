@@ -1,0 +1,73 @@
+@model NorthwindMvc.Models.ProductListViewModel
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="d-flex align-items-end justify-content-between flex-wrap gap-3 mb-4">
+    <div>
+        <p class="eyebrow mb-2">Northwind data</p>
+        <h1 class="h2 mb-0">Products</h1>
+        <p class="text-muted mb-0">Open a product to see its full details.</p>
+    </div>
+</div>
+
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+    <div class="d-flex align-items-center gap-3 flex-wrap products-toolbar">
+        <form asp-action="Index" method="get" class="d-flex align-items-center gap-2">
+            <label asp-for="RowLimit" class="form-label mb-0 text-muted">Rows limit:</label>
+            <select asp-for="RowLimit" asp-items="Model.RowLimitOptions" class="form-select form-select-sm products-row-limit-select" onchange="this.form.submit()"></select>
+        </form>
+        <a class="btn btn-primary icon-action" asp-action="Create" title="New product" aria-label="New product" data-bs-toggle="tooltip">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M8 1.5v13M1.5 8h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <span class="visually-hidden">New product</span>
+        </a>
+    </div>
+</div>
+
+<div class="products-table-shell bg-white">
+    <table class="table table-striped table-hover align-middle mb-0 products-table">
+        <thead class="table-light">
+            <tr>
+                <th class="products-col-name">Name</th>
+                <th class="products-col-supplier">Supplier</th>
+                <th class="products-col-category">Category</th>
+                <th class="products-col-quantity">Quantity Per Unit</th>
+                <th class="text-center wrap-header products-col-numeric">Unit Price</th>
+                <th class="text-center wrap-header products-col-numeric">Units In Stock</th>
+                <th class="text-center wrap-header products-col-status">Discontinued</th>
+                <th class="text-center wrap-header products-col-actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Products)
+            {
+                <tr>
+                    <td class="products-col-name">@product.ProductName</td>
+                    <td class="products-col-supplier">@product.SupplierName</td>
+                    <td class="products-col-category">@(product.CategoryName ?? "—")</td>
+                    <td class="products-col-quantity">@(product.QuantityPerUnit ?? "—")</td>
+                    <td class="text-center products-col-numeric">@(product.UnitPrice?.ToString("0.##") ?? "—")</td>
+                    <td class="text-center products-col-numeric">@(product.UnitsInStock?.ToString() ?? "—")</td>
+                    <td class="text-center wrap-header">@(product.Discontinued ? "Yes" : "No")</td>
+                    <td class="text-center wrap-header">
+                        <div class="d-inline-flex gap-2">
+                            <a class="btn btn-sm btn-outline-secondary icon-action" asp-action="Details" asp-route-id="@product.ProductID" title="View info" aria-label="View info" data-bs-toggle="tooltip">
+                                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                    <path d="M8 1.5a6.5 6.5 0 1 0 0 13a6.5 6.5 0 0 0 0-13Zm0 3a.75.75 0 1 1 0 1.5a.75.75 0 0 1 0-1.5ZM6.9 6.5h1.2v5H6.9v-5Zm0 6h1.2v1.2H6.9v-1.2Z" fill="currentColor" />
+                                </svg>
+                            </a>
+                            <a class="btn btn-sm btn-outline-primary icon-action" asp-action="Edit" asp-route-id="@product.ProductID" title="Edit" aria-label="Edit" data-bs-toggle="tooltip">
+                                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                    <path d="M11.1 1.8a1.8 1.8 0 0 1 2.55 0l.55.55a1.8 1.8 0 0 1 0 2.55L6.2 13.9l-3.9 1 1-3.9 7.8-7.8ZM10.3 3l2.7 2.7" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

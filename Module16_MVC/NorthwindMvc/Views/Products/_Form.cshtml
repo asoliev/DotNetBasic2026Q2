@@ -1,0 +1,72 @@
+@model NorthwindMvc.Models.ProductEditViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+<input asp-for="ProductID" type="hidden" />
+
+<div class="row g-3">
+    <div class="col-md-8">
+        <label asp-for="ProductName" class="form-label">Name</label>
+        <input asp-for="ProductName" class="form-control" />
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="SupplierID" class="form-label">Supplier</label>
+        <select asp-for="SupplierID" asp-items="Model.Suppliers" class="form-select">
+            <option value="">Select supplier</option>
+        </select>
+        <span asp-validation-for="SupplierID" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="CategoryID" class="form-label">Category</label>
+        <select asp-for="CategoryID" asp-items="Model.Categories" class="form-select">
+            <option value="">Select category</option>
+        </select>
+        <span asp-validation-for="CategoryID" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="QuantityPerUnit" class="form-label">Quantity (per unit)</label>
+        <input asp-for="QuantityPerUnit" class="form-control" />
+        <span asp-validation-for="QuantityPerUnit" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="UnitPrice" class="form-label">Unit price</label>
+        <input asp-for="UnitPrice" class="form-control" type="text" inputmode="decimal" />
+        <div class="form-text">Shown with up to 2 decimals in the list and details pages.</div>
+        <span asp-validation-for="UnitPrice" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="UnitsInStock" class="form-label">Units in stock</label>
+        <input asp-for="UnitsInStock" class="form-control" />
+        <span asp-validation-for="UnitsInStock" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="UnitsOnOrder" class="form-label">Units on order</label>
+        <input asp-for="UnitsOnOrder" class="form-control" />
+        <span asp-validation-for="UnitsOnOrder" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="ReorderLevel" class="form-label">Reorder level</label>
+        <input asp-for="ReorderLevel" class="form-control" />
+        <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+        <div class="form-check mb-2">
+            <input asp-for="Discontinued" class="form-check-input" />
+            <label asp-for="Discontinued" class="form-check-label">Discontinued product</label>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 d-flex gap-2">
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</div>

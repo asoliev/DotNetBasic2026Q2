@@ -21,7 +21,7 @@ public sealed class CachedDocumentRepository(IDocumentRepository inner, Document
         if (_cache.TryGetValue(documentNumber, out List<(Document document, DateTime cachedAt)>? cached) && IsAllValid(cached))
         {
             Console.WriteLine($"  [cache hit] #{documentNumber}");
-            return cached.Select(e => e.document).ToList();
+            return [.. cached.Select(e => e.document)];
         }
 
         Console.WriteLine($"  [cache miss] #{documentNumber}");

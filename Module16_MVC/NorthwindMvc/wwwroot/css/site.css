@@ -1,0 +1,187 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background:
+    radial-gradient(circle at top left, rgba(245, 195, 66, 0.18), transparent 34%),
+    radial-gradient(circle at top right, rgba(23, 63, 95, 0.12), transparent 30%),
+    #f6f3ed;
+  color: #1f2937;
+}
+
+.app-nav {
+  background: linear-gradient(90deg, #16324f, #264e70);
+}
+
+.hero-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(247, 243, 236, 0.94));
+  border: 1px solid rgba(22, 50, 79, 0.12);
+}
+
+.hero-card {
+  background: rgba(22, 50, 79, 0.06);
+  border: 1px solid rgba(22, 50, 79, 0.12);
+}
+
+.eyebrow {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  color: #7b5f1b;
+  font-weight: 700;
+}
+
+.feature-list {
+  padding-left: 1.2rem;
+}
+
+.feature-list li {
+  margin-bottom: 0.5rem;
+}
+
+.products-table-shell {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 1rem;
+  box-shadow: 0 0.75rem 2rem rgba(31, 41, 55, 0.08);
+}
+
+.products-table-shell .table > :not(caption) > * > :first-child {
+  padding-left: 1.25rem;
+}
+
+.products-table-shell .table > :not(caption) > * > :last-child {
+  padding-right: 1.25rem;
+}
+
+.products-table {
+  min-width: 1250px;
+}
+
+.products-toolbar {
+  margin-left: auto;
+}
+
+.products-row-limit-select {
+  width: auto;
+  min-width: 8rem;
+}
+
+.products-table thead th {
+  white-space: nowrap;
+}
+
+.products-table thead th.wrap-header {
+  white-space: normal;
+  line-height: 1.15;
+}
+
+.products-col-id,
+.products-col-status,
+.products-col-actions {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.products-col-name {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.products-col-supplier {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.products-col-category {
+  width: 7%;
+  white-space: nowrap;
+}
+
+.products-col-quantity {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.products-col-numeric {
+  min-width: 6rem;
+  width: 6rem;
+  white-space: nowrap;
+}
+
+.products-table thead th.products-col-numeric {
+  white-space: normal;
+}
+
+.products-table tbody td.products-col-numeric {
+  white-space: nowrap;
+}
+
+.icon-action {
+  width: 2.35rem;
+  min-width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-action svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.category-image-frame {
+  padding: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid rgba(31, 41, 55, 0.08);
+  border-radius: 1rem;
+}
+
+.product-details-card {
+  width: min(100%, 920px);
+}
+
+.product-details-card > .card-body {
+  overflow-x: auto;
+}
+
+.product-details-table {
+  width: 100%;
+}
+
+.product-details-table th {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.product-details-table td {
+  width: auto;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
